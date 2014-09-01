@@ -1,10 +1,9 @@
 "use strict"
 
 var flux = require("../lib/flux"),
-  FieldTypes = flux.FieldTypes,
-  creation, instantiation;
+  FieldTypes = flux.FieldTypes;
 
-creation = {
+var tests = {
   // test_createModel: function(test) {
   //   test.throws(function() {
   //     flux.createModel({});
@@ -20,7 +19,7 @@ creation = {
   //   test.ok(new Model.submodel() instanceof Model.submodel);
   //   test.done();
   // },
-  Collection: function(test) {
+  test_conciseCollectionCreation: function(test) {
     var Model = flux.createModel({
       submodel: [{
         field: FieldTypes.string
@@ -29,10 +28,7 @@ creation = {
     test.ok(new Model.submodel() instanceof Model.submodel);
     test.done();
   },
-};
-
-var instantiation = {
-  Model: function (test) {
+  test_conciseModelInstantiation: function (test) {
     var model, Model, SubModel, SubModels,
       testField = "asdf";
 
@@ -59,7 +55,7 @@ var instantiation = {
     test.equals(model.submodels.get(0).field, testField);
     test.done();
   },
-  List: function (test) {
+  test_conciseListInstantiation2: function (test) {
     var model, Model, SubModel, SubModels,
       testField = [1,2,3];
 
@@ -76,7 +72,4 @@ var instantiation = {
   }
 }
 
-module.exports = {
-  creation: creation,
-  instantiation: instantiation
-};
+module.exports = tests;
