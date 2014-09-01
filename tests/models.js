@@ -16,7 +16,7 @@ var tests = {
         field: FieldTypes.string
       }
     });
-    tests.ok(new Model.submodel() instanceof Model.submodel);
+    test.ok(new Model.submodel() instanceof Model.submodel);
     test.done();
   },
   test_cleanCollectionCreation: function(test) {
@@ -25,7 +25,7 @@ var tests = {
         field: FieldTypes.string
       }]
     });
-    tests.ok(new Model.submodel() instanceof Model.submodel);
+    test.ok(new Model.submodel() instanceof Model.submodel);
     test.done();
   },
   test_cleanModelInstantiation: function (test) {
@@ -44,8 +44,8 @@ var tests = {
       modelName: "SubModels",
       model: SubModel
     });
-    tests.ok(new Model({submodels: [{field: "asdf"}, {field: "qwer"}]}));
-    tests.done();
+    test.ok(new Model({submodels: [{field: "asdf"}, {field: "qwer"}]}));
+    test.done();
   }
 }
 
