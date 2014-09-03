@@ -1,16 +1,15 @@
 #flux
 ====
 
-An implementation of the flux architecture for React.  If React is the V in MVC, Flux is the M.  Flux takes inspiration from Flux, Backbone, and Async.
-
+Floobit's Flux is an implementation of the flux architecture for React.  If React is the V in MVC, Flux is the M. Flux attempts to remove all boilerplate from React and to aid in the development of reusable components. 
 
 ##Design Goals
-Flux is an attempt to make a minimal, modern, front end framework with no boilerplate.  To that end, it uses getters/setters and will nt work in ie9.
+Flux is an attempt at a minimal, modern, front end framework.  To that end, it uses getters/setters and does not currently support ie9 or earlier.
 
 ##Components
 
 ###Actions
-Essentially an event emitter with a well defined interface.  Raw emitters tend to work poorly becuase objects come and go, but everything needs a reference to the emitter.  Tracking down binding/unbinding is error prone.  
+Evented code typically relies on event emitters with callbacks.  In practice, raw emitters are error prone becauase objects come and go including the emitter itself.  Binding and unbinding callbacks, and emitting is almost always spaghetti code.  Flux Actions are then, a public, static emitter with a well defined interface.  
 
 ####Synchronous Actions
 ```
@@ -26,7 +25,28 @@ Essentially an event emitter with a well defined interface.  Raw emitters tend t
 > actions.sum
 [Function]
 ```
-***flux.createActions*** returns a constructor- you must call new to make the Actions object.
+***flux.createActions*** returns a *constructor*- you must call new to make the Actions object.  actions has both a SUM field which is the string, "SUM", and a function (dispatch).
+
+```
+> actions.on(function(name, data) {
+  console.log(name, data);
+});
+
+> actions.sum(1, 2);
+SUM 3
+```
+
+A few notes:
+1. The sum function can return multiple arguments as a list.  
+2. The sum function can return an Error object which will cancel the dispatch.
+3. Emitting is synchronous by design and will likely never change.
+
+A shorthand exists to avoid switch statements:
+```
+actions.on(actions.SUM, function(name, data) {
+  console.log(name, data);
+});
+```
 
 
 Typical actions are synchronous.  
