@@ -31,7 +31,7 @@ creation = {
   },
 };
 
-var instantiation = {
+instantiation = {
   Model: function (test) {
     var model, Model, SubModel, SubModels,
       testField = "asdf";
