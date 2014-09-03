@@ -12,7 +12,7 @@ properties = {
       sum: function(a, b) {
         return a + b;
       },
-      await_sum: function(a, b) {
+      async_sum: function(a, b) {
         return a + b;
       },
       field: this.randomField,
@@ -86,30 +86,30 @@ properties = {
     test.done();
   },
   awaitActions: function(test) {
-    this.actions.on(this.actions.AWAIT_SUM, function(sum, cb) {
+    this.actions.on(this.actions.ASYNC_SUM, function(sum, cb) {
       test.equals(sum, 3);
       cb();
     });
-    this.actions.on(this.actions.AWAIT_SUM, function(sum, cb) {
+    this.actions.on(this.actions.ASYNC_SUM, function(sum, cb) {
       test.equals(sum, 3);
       cb();
     });
-    this.actions.await_sum(1, 2, function(val) {
+    this.actions.async_sum(1, 2, function(val) {
       test.done();
     });
     test.expect(2);
   },
-  awaitActionsThis: function(test) {
+  asyncActionsThis: function(test) {
     this.asdfasdasdf = 2;
-    this.actions.on(this.actions.AWAIT_SUM, function(sum, cb) {
+    this.actions.on(this.actions.ASYNC_SUM, function(sum, cb) {
       test.equals(sum, 3);
       cb();
     });
-    this.actions.on(this.actions.AWAIT_SUM, function(sum, cb) {
+    this.actions.on(this.actions.ASYNC_SUM, function(sum, cb) {
       test.equals(sum, 3);
       cb();
     });
-    this.actions.await_sum(1, 2, function(val) {
+    this.actions.async_sum(1, 2, function(val) {
       test.equals(this.asdfasdasdf, 2);
       test.done();
     }, this);

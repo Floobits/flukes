@@ -8,7 +8,6 @@ module.exports = {
   partialBinding: function(test) {
     var emitter = new flux.Emitter();
     emitter.on("a", function(value) {
-      debugger;
       test.equals(value, 1);
       test.done();
     });
