@@ -23,7 +23,7 @@ properties = {
       test.deepEqual(this, self)
       test.done();
     }, this);
-    test.done();
+    this.actions.sum(1, 2);
   },
   binding: function(test) {
     var self = this;
@@ -33,6 +33,13 @@ properties = {
         test.done();
       }
     })
+    this.actions.sum(1, 2);
+  },
+  explicitBinding: function(test) {
+    this.actions.on(this.actions.SUM, function(sum) {
+      test.equals(sum, 3);
+      test.done();
+    }, this);
     this.actions.sum(1, 2);
   },
   emitters: function(test) {
@@ -47,6 +54,12 @@ properties = {
   randomProperties: function(test) {
     test.equals(this.actions.field, this.randomField);
     test.ok(!_.isFunction(this.actions.field), "why is this field a function?");
+    test.done();
+  },
+  badEvent: function(test) {
+    test.throws(function(){
+      this.actions.on('aASDFASDF', function(){})
+    });
     test.done();
   }
 };
