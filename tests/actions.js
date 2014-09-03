@@ -99,6 +99,22 @@ properties = {
     });
     test.expect(2);
   },
+  awaitActionsThis: function(test) {
+    this.asdfasdasdf = 2;
+    this.actions.on(this.actions.AWAIT_SUM, function(sum, cb) {
+      test.equals(sum, 3);
+      cb();
+    });
+    this.actions.on(this.actions.AWAIT_SUM, function(sum, cb) {
+      test.equals(sum, 3);
+      cb();
+    });
+    this.actions.await_sum(1, 2, function(val) {
+      test.equals(this.asdfasdasdf, 2);
+      test.done();
+    }, this);
+    test.expect(3);
+  },
   tearDown: function(cb) {
     return cb();
   }
