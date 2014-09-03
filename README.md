@@ -9,9 +9,11 @@ Flux is an attempt at a minimal, modern, front end framework.  To that end, it u
 ##Components
 
 ###Actions
-Flux Actions are a public, static event emitter with a well defined interface.  
+A Flux Action is a public, static event emitter with a well defined interface.  
 
 Evented code typically relies on event emitters with callbacks.  In practice, raw emitters are error prone because objects come and go (including the emitter itself)-  binding and unbinding callbacks, and emitting events often results in intractable spaghetti code.
+
+Actions should be created during startup.
 
 ####*(Synchronous)* Actions
 ```
@@ -81,7 +83,7 @@ actions.async_sum(1, 2, function(sum) {
 The callback to *actions.async_sum* will not be called until both listeners have fired their callback.  
 
 ###Models (Stores)
-Models are the canonical source of truth for data in Flux and provide a well defined interface for updating data.  
+Flux Models are the canonical source of truth for data and provide a well defined interface for mutating state.  
 
 React Components may contain state (and update themselves on state changes), but in practice most React components are stateless apart from their props.  Outside of props as state, only the component (a View) can access or mutate the state.
 
