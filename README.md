@@ -9,9 +9,11 @@ Flux is an attempt at a minimal, modern, front end framework.  To that end, it u
 ##Components
 
 ###Actions
-Evented code typically relies on event emitters with callbacks.  In practice, raw emitters are error prone because objects come and go (including the emitter itself).  Binding and unbinding callbacks, and emitting turns into spaghetti code.  Flux Actions are then, a public, static emitter with a well defined interface.  
+Flux Actions are a public, static event emitter with a well defined interface.  
 
-####(Synchronous) Actions
+Evented code typically relies on event emitters with callbacks.  In practice, raw emitters are error prone because objects come and go (including the emitter itself)-  binding and unbinding callbacks, and emitting events often results in intractable spaghetti code.
+
+####*(Synchronous)* Actions
 ```
 > var actions, Actions = flux.createActions({
   sum: function(a, b) {
@@ -79,14 +81,21 @@ actions.async_sum(1, 2, function(sum) {
 The callback to *actions.async_sum* will not be called until both listeners have fired their callback.  
 
 ###Models (Stores)
-Models are the canonical source of truth for data in Flux.  React Components may contain state (and update themselves on state changes), but in practice most React components are stateless apart from their props.  Outside of props as state, only the component (a View) can access or mutate the state.
+Models are the canonical source of truth for data in Flux and provide a well defined interface for updating data.  
 
-Models provide a well defined interface for storing data and updating data.
+React Components may contain state (and update themselves on state changes), but in practice most React components are stateless apart from their props.  Outside of props as state, only the component (a View) can access or mutate the state.
+
+Models may contain references to other Models; change events proprogate upwards.  Typically, it is only necessary to bind to the root level module to a React Component because React (Javascript) is fast.
 
 ####DataModel
+A heterogenous data container.
+
 ####Collection
+
+A collection is an ordered set of DataModels. Collections are homogenous.  When a model changes, the Collection emits a change event.
+
 ####List
+A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.
 
 ###AutoBinder
 Binds Models state to React Components.  When Model's state changes, it calls forceupdate.
-replace backbone with flux
