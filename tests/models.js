@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 var flux = require("../lib/flux"),
   FieldTypes = flux.FieldTypes,
@@ -74,7 +74,7 @@ instantiation = {
     test.deepEqual(model.list.valueOf(), testField);
     test.done();
   }
-}
+};
 
 module.exports = {
   creation: creation,

@@ -1,17 +1,18 @@
-"use strict"
+"use strict";
 
 var flux = require("../lib/flux"),
   FieldTypes = flux.FieldTypes,
-  _ = require("lodash"),
-  emitter, events;
+  _ = require("lodash");
 
 module.exports = {
   partialBinding: function(test) {
     var emitter = new flux.Emitter();
     emitter.on("a", function(value) {
+      debugger;
       test.equals(value, 1);
       test.done();
-    })
+    });
+    test.expect(1);
     emitter.emit("a", 1);
   },
   bindAll: function(test) {
@@ -22,8 +23,8 @@ module.exports = {
       test.equals(value, 1);
       test.done();
     });
+    test.expect(2);
     emitter.emit("a", 1);
-
   },
   unbindEvent: function(test) {
     var emitter = new flux.Emitter(), id;
@@ -32,6 +33,7 @@ module.exports = {
     });
     emitter.off("a");
     emitter.emit("a");
+    test.expect(0);
     test.done();
   },
   unbindId: function(test) {
@@ -46,6 +48,7 @@ module.exports = {
       test.done();
     });
     emitter.off(id);
+    test.expect(1);
     emitter.emit("a", 1);
   },
   unbindAll: function(test) {
@@ -59,6 +62,7 @@ module.exports = {
     });
     emitter.off();
     emitter.emit("a");
+    test.expect(0);
     test.done();
   }
 };
