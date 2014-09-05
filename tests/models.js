@@ -20,15 +20,15 @@ creation = {
   //   test.ok(new Model.submodel() instanceof Model.submodel);
   //   test.done();
   // },
-  subField: function(test) {
-    var Model = flux.createModel({
-      submodel: [{
-        field: FieldTypes.string
-      }]
-    });
-    test.ok(new Model.submodel() instanceof Model.submodel);
-    test.done();
-  },
+  // subField: function(test) {
+  //   var Model = flux.createModel({
+  //     submodel: [{
+  //       field: FieldTypes.string
+  //     }]
+  //   });
+  //   test.ok(new Model.submodel() instanceof Model.submodel);
+  //   test.done();
+  // },
 };
 
 instantiation = {

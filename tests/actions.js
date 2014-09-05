@@ -103,7 +103,7 @@ properties = {
     this.asdfasdasdf = 2;
     this.actions.on(this.actions.ASYNC_SUM, function(sum, cb) {
       test.equals(sum, 3);
-      cb();
+      setTimeout(cb, 1);
     });
     this.actions.on(this.actions.ASYNC_SUM, function(sum, cb) {
       test.equals(sum, 3);
