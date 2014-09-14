@@ -5,52 +5,51 @@ var flux = require("../lib/flux"),
   creation, instantiation, events;
 
 events = {
-  dataModelFields1: function(test) {
-    var model, Model = flux.createModel({
-      fieldTypes: {
-        field: FieldTypes.string,
-      }
-    });
-    model = new Model();
-    model.on("field", function() {
-      test.done();
-    });
-    model.field = "asdf";
-  },
-  dataModelFields2: function(test) {
-    var model, Model = flux.createModel({
-      fieldTypes: {
-        field: FieldTypes.string,
-      }
-    });
-    model = new Model();
-    model.on(function(field) {
-      test.equals(field, "field");
-      test.done();
-    });
-    model.field = "asdf";
-  },
-  dataModelSubFields: function(test) {
-    var model, Model, SubModel = flux.createModel({
-      fieldTypes: {
-        subField: FieldTypes.string
-      }
-    });
-    Model = flux.createModel({
-      fieldTypes: {
-        field: SubModel,
-      }
-    });
-    model = new Model({field: new SubModel()});
-    model.on(function(field) {
-      test.equals(field, "field.subField");
-      test.done();
-    });
-    model.field.subField = "asdf";
-  },
-  dataCollectionSubFields: function(test) {
-    var model, Model, SubModel, SubModels,
-      testField = "asdf";
+  // dataModelFields1: function(test) {
+  //   var model, Model = flux.createModel({
+  //     fieldTypes: {
+  //       field: FieldTypes.string,
+  //     }
+  //   });
+  //   model = new Model();
+  //   model.on("field", function() {
+  //     test.done();
+  //   });
+  //   model.field = "asdf";
+  // },
+  // dataModelFields2: function(test) {
+  //   var model, Model = flux.createModel({
+  //     fieldTypes: {
+  //       field: FieldTypes.string,
+  //     }
+  //   });
+  //   model = new Model();
+  //   model.on(function(field) {
+  //     test.equals(field, "field");
+  //     test.done();
+  //   });
+  //   model.field = "asdf";
+  // },
+  // dataModelSubFields: function(test) {
+  //   var model, Model, SubModel = flux.createModel({
+  //     fieldTypes: {
+  //       subField: FieldTypes.string
+  //     }
+  //   });
+  //   Model = flux.createModel({
+  //     fieldTypes: {
+  //       field: SubModel,
+  //     }
+  //   });
+  //   model = new Model({field: new SubModel()});
+  //   model.on(function(field) {
+  //     test.equals(field, "field.subField");
+  //     test.done();
+  //   });
+  //   model.field.subField = "asdf";
+  // },
+  dataCollection: function(test) {
+    var model, Model, SubModel;
 
     SubModel = flux.createModel({
       modelName: "sub",
@@ -58,25 +57,48 @@ events = {
         field: FieldTypes.string
       }
     });
-    SubModels = flux.createCollection({
+    Model = flux.createCollection({
       modelName: "subs",
       model: SubModel
     });
-    Model = flux.createModel({
-      modelName: "top",
-      fieldTypes: {
-        submodels: SubModels 
-      }
-    });
     model = new Model();
-    model.submodels = new SubModels();
-    model.submodels.add(new SubModel({field: "asdf"}));
-    model.on(function(name) {
-      test.equals("submodels.field", name);
+    model.add(new SubModel({field: "asdf"}));
+    debugger;
+    model.on(function() {
+      debugger; 
       test.done();
     });
-    model.submodels.get(0).field = "a";
+    model.get(0).field = "qwe";
+    test.expect(1);
   },
+  // dataCollectionSubFields: function(test) {
+  //   var model, Model, SubModel, SubModels;
+
+  //   SubModel = flux.createModel({
+  //     modelName: "sub",
+  //     fieldTypes: {
+  //       field: FieldTypes.string
+  //     }
+  //   });
+  //   SubModels = flux.createCollection({
+  //     modelName: "subs",
+  //     model: SubModel
+  //   });
+  //   Model = flux.createModel({
+  //     modelName: "top",
+  //     fieldTypes: {
+  //       submodels: SubModels 
+  //     }
+  //   });
+  //   model = new Model();
+  //   model.submodels = new SubModels();
+  //   model.submodels.add(new SubModel({field: "asdf"}));
+  //   model.on(function(name) {
+  //     test.equals("submodels.field", name);
+  //     test.done();
+  //   });
+  //   model.submodels.get(0).field = "a";
+  // },
 };
 
 creation = {
@@ -152,7 +174,7 @@ instantiation = {
 };
 
 module.exports = {
-  creation: creation,
-  instantiation: instantiation,
+  // creation: creation,
+  // instantiation: instantiation,
   events: events
 };
