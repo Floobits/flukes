@@ -1,1 +1,3 @@
 node_modules
+/flux.js
+/flux.deps.js
