@@ -63,9 +63,7 @@ events = {
     });
     model = new Model();
     model.add(new SubModel({field: "asdf"}));
-    debugger;
     model.on(function() {
-      debugger; 
       test.done();
     });
     model.get(0).field = "qwe";
