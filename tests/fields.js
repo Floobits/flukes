@@ -4,7 +4,8 @@ var flux = require("../lib/flux"),
   _ = require("lodash"),
   util = require("util"),
   utils = require("../lib/utils"),
-  FieldTypes = flux.FieldTypes, fields;
+  FieldTypes = flux.FieldTypes, 
+  chainability, fields;
 
 function validate(f, test, tValues, fValues, name) {
   _.each(tValues, function(tValue) {
@@ -55,6 +56,20 @@ fields = {
   },
 };
 
+chainability = {
+  PrimitiveChain: function (test) {
+    var g, f = FieldTypes.BooleanField;
+    g = f.persists(true).defaults(true).required(true);
+    test.strictEqual(g.persists_, true);
+    test.strictEqual(g.required_, true);
+    test.strictEqual(g.defaults_, true);
+    test.strictEqual(f.defaults_, false);
+    test.strictEqual(f.required_, false);
+    test.strictEqual(f.persists_, true);
+    test.done(); 
+  }
+};
 module.exports = {
-  fields: fields
+  fields: fields,
+  chainability: chainability
 };
