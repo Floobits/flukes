@@ -7,11 +7,10 @@ module.exports = {
   output: {
     path: __dirname,
     filename: "flux.js",
-    libraryTarget: "var",
+    libraryTarget: "commonjs2",
     library: "flux"
   },
   externals: [
-    "lodash"
   ],
   plugins: [
     new webpack.optimize.CommonsChunkPlugin("app", "flux.js")

@@ -27,7 +27,6 @@
     "url": "https://github.com/Floobits/flux.git"
   },
   "dependencies": {
-    "lodash": ">=2.4.0"
   },
   "devDependencies": {
     "nodeunit": ">=0.9.0",

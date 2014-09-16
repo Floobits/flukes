@@ -1,17 +1,16 @@
 "use strict()";
 
 var flux = require("../lib/flux"), 
-  _ = require("lodash"),
   util = require("util"),
   utils = require("../lib/utils"),
   FieldTypes = flux.FieldTypes, 
   chainability, fields;
 
 function validate(f, test, tValues, fValues, name) {
-  _.each(tValues, function(tValue) {
+  utils.each(tValues, function(tValue) {
     test.strictEqual(true, f.validate(tValue), util.format("%s: %s should validate. ",  name, tValue));
   });
-  _.each(fValues, function(fValue) {
+  utils.each(fValues, function(fValue) {
     test.strictEqual(false, f.validate(fValue), util.format("%s: %s should not validate. ",  name, fValue));
   });
   test.done();
@@ -66,7 +65,7 @@ chainability = {
     test.strictEqual(f.defaults_, false);
     test.strictEqual(f.required_, false);
     test.strictEqual(f.persists_, true);
-    test.done(); 
+    test.done();
   },
   complex: function (test) {
     var f = FieldTypes.arrayOf(FieldTypes.bool)
@@ -74,7 +73,7 @@ chainability = {
       .defaults([false])
       .required(true);
     test.strictEqual(f.persists_, false);
-    test.ok(_.isEqual(f.defaults_, [false]));
+    test.strictEqual(JSON.stringify(f.defaults_), JSON.stringify([false]));
     test.strictEqual(f.required_, true);
     test.done();
   },
