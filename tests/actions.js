@@ -1,8 +1,8 @@
 "use strict()";
 
 var flux = require("../lib/flux"),
+  utils = require("../lib/utils"),
   FieldTypes = flux.FieldTypes,
-  _ = require("lodash"),
   properties, events;
 
 properties = {
@@ -46,7 +46,7 @@ properties = {
     this.actions.sum(1, 2);
   },
   emitters: function(test) {
-    test.ok(_.isFunction(this.actions.sum));
+    test.ok(utils.isFunction(this.actions.sum));
     test.done();
   },
   constants: function(test) {
@@ -56,7 +56,7 @@ properties = {
   },
   randomProperties: function(test) {
     test.equals(this.actions.field, this.randomField);
-    test.ok(!_.isFunction(this.actions.field), "why is this field a function?");
+    test.ok(!utils.isFunction(this.actions.field), "why is this field a function?");
     test.done();
   },
   badEvent: function(test) {

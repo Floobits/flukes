@@ -1,8 +1,7 @@
 "use strict()";
 
 var flux = require("../lib/flux"),
-  FieldTypes = flux.FieldTypes,
-  _ = require("lodash");
+  FieldTypes = flux.FieldTypes;
 
 module.exports = {
   partialBinding: function(test) {
