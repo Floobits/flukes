@@ -69,6 +69,11 @@ events = {
     model.get(0).field = "qwe";
     test.expect(1);
   },
+  list: function (test) {
+
+    test.expect(1);
+    test.done();
+  },
   // dataCollectionSubFields: function(test) {
   //   var model, Model, SubModel, SubModels;
 
@@ -172,7 +177,7 @@ instantiation = {
 
     Model = flux.createModel({
       fieldTypes: {
-        list: FieldTypes.List
+        list: FieldTypes.list
       }
     });
     model = new Model({
