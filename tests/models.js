@@ -5,49 +5,49 @@ var flux = require("../lib/flux"),
   creation, instantiation, events;
 
 events = {
-  // dataModelFields1: function(test) {
-  //   var model, Model = flux.createModel({
-  //     fieldTypes: {
-  //       field: FieldTypes.string,
-  //     }
-  //   });
-  //   model = new Model();
-  //   model.on("field", function() {
-  //     test.done();
-  //   });
-  //   model.field = "asdf";
-  // },
-  // dataModelFields2: function(test) {
-  //   var model, Model = flux.createModel({
-  //     fieldTypes: {
-  //       field: FieldTypes.string,
-  //     }
-  //   });
-  //   model = new Model();
-  //   model.on(function(field) {
-  //     test.equals(field, "field");
-  //     test.done();
-  //   });
-  //   model.field = "asdf";
-  // },
-  // dataModelSubFields: function(test) {
-  //   var model, Model, SubModel = flux.createModel({
-  //     fieldTypes: {
-  //       subField: FieldTypes.string
-  //     }
-  //   });
-  //   Model = flux.createModel({
-  //     fieldTypes: {
-  //       field: SubModel,
-  //     }
-  //   });
-  //   model = new Model({field: new SubModel()});
-  //   model.on(function(field) {
-  //     test.equals(field, "field.subField");
-  //     test.done();
-  //   });
-  //   model.field.subField = "asdf";
-  // },
+  dataModelFields1: function(test) {
+    var model, Model = flux.createModel({
+      fieldTypes: {
+        field: FieldTypes.string,
+      }
+    });
+    model = new Model();
+    model.on("field", function() {
+      test.done();
+    });
+    model.field = "asdf";
+  },
+  dataModelFields2: function(test) {
+    var model, Model = flux.createModel({
+      fieldTypes: {
+        field: FieldTypes.string,
+      }
+    });
+    model = new Model();
+    model.on(function(field) {
+      test.equals(field, "field");
+      test.done();
+    });
+    model.field = "asdf";
+  },
+  dataModelSubFields: function(test) {
+    var model, Model, SubModel = flux.createModel({
+      fieldTypes: {
+        subField: FieldTypes.string
+      }
+    });
+    Model = flux.createModel({
+      fieldTypes: {
+        field: SubModel,
+      }
+    });
+    model = new Model({field: new SubModel()});
+    model.on(function(field) {
+      test.equals(field, "field.subField");
+      test.done();
+    });
+    model.field.subField = "asdf";
+  },
   dataCollection: function(test) {
     var model, Model, SubModel;
 
@@ -152,6 +152,16 @@ instantiation = {
       ]
     });
     test.equals(model.submodels.get(0).field, testField);
+    test.done();
+  },
+  requiredFields: function (test) {
+    var model, Model = flux.createModel({
+      fieldTypes: {
+        field: FieldTypes.string.required(true)
+      }
+    });
+    debugger;
+    model = new Model();
     test.done();
   },
   List: function (test) {
