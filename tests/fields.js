@@ -1,4 +1,4 @@
-"use strict";
+"use strict()";
 
 var flux = require("../lib/flux"), 
   _ = require("lodash"),
