@@ -57,7 +57,7 @@ fields = {
 };
 
 chainability = {
-  PrimitiveChain: function (test) {
+  primitive: function (test) {
     var g, f = FieldTypes.BooleanField;
     g = f.persists(true).defaults(true).required(true);
     test.strictEqual(g.persists_, true);
@@ -67,7 +67,17 @@ chainability = {
     test.strictEqual(f.required_, false);
     test.strictEqual(f.persists_, true);
     test.done(); 
-  }
+  },
+  complex: function (test) {
+    var f = FieldTypes.ArrayOfField(FieldTypes.BooleanField)
+      .persists(false)
+      .defaults([false])
+      .required(true);
+    test.strictEqual(f.persists_, false);
+    test.ok(_.isEqual(f.defaults_, [false]));
+    test.strictEqual(f.required_, true);
+    test.done();
+  },
 };
 module.exports = {
   fields: fields,
