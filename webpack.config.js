@@ -3,7 +3,6 @@ var webpack = require("webpack");
 module.exports = {
   entry: {
     app: "./lib/flux.js",
-    vendor: ["lodash"]
   },
   output: {
     path: __dirname,
@@ -11,8 +10,10 @@ module.exports = {
     libraryTarget: "var",
     library: "flux"
   },
+  externals: [
+    "lodash"
+  ],
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin("vendor", "flux.deps.js"),
     new webpack.optimize.CommonsChunkPlugin("app", "flux.js")
   ]
 };
