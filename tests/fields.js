@@ -18,47 +18,47 @@ function validate(f, test, tValues, fValues, name) {
 }
 
 fields = {
-  BooleanField: function(test) {
-    validate(FieldTypes.BooleanField, test, [false], [""], "BooleanField");
+  bool: function(test) {
+    validate(FieldTypes.bool, test, [false], [""], "bool");
   },
-  NumberField: function(test) {
-    validate(FieldTypes.NumberField, test, [0], [""], "NumberField");
+  number: function(test) {
+    validate(FieldTypes.number, test, [0], [""], "number");
   },
-  StringField: function(test) {
-    validate(FieldTypes.StringField, test, ["true"], [false], "StringField");
+  string: function(test) {
+    validate(FieldTypes.string, test, ["true"], [false], "string");
   },
-  FunctionField: function(test) {
-    validate(FieldTypes.FunctionField, test, [validate], [false], "FunctionField");
+  func: function(test) {
+    validate(FieldTypes.func, test, [validate], [false], "func");
   },
-  ObjectField: function(test) {
-    validate(FieldTypes.ObjectField, test, [{}], [false, 0, ""], "ObjectField");
+  object: function(test) {
+    validate(FieldTypes.object, test, [{}], [false, 0, ""], "object");
   },
-  ArrayField: function(test) {
-    validate(FieldTypes.ArrayField, test, [[]], [{}, 0, false, NaN], "ArrayField");
+  array: function(test) {
+    validate(FieldTypes.array, test, [[]], [{}, 0, false, NaN], "array");
   },
-  OneOfField: function(test) {
-    validate(FieldTypes.OneOfField(["asdf", 0, fields]), test, ["asdf", 0, fields], [1, false, {}, []], "OneOfField");
+  oneOf: function(test) {
+    validate(FieldTypes.oneOf(["asdf", 0, fields]), test, ["asdf", 0, fields], [1, false, {}, []], "oneOf");
   },
-  InstanceOfField: function(test) {
+  instanceOf: function(test) {
     var H, F = function () {};
     H = function () { F.call(this);};
     utils.inherit(H, F);
-    validate(FieldTypes.InstanceOfField(F), test, [new F(), new H()], [validate], "InstanceOfField");
+    validate(FieldTypes.instanceOf(F), test, [new F(), new H()], [validate], "instanceOf");
   },
-  OneOfTypeField: function(test) {
-    validate(FieldTypes.OneOfTypeField([FieldTypes.BooleanField, FieldTypes.StringField]), test, [true, "asdf"], [0, {}, []], "OneOfTypeField");
+  oneOfType: function(test) {
+    validate(FieldTypes.oneOfType([FieldTypes.bool, FieldTypes.string]), test, [true, "asdf"], [0, {}, []], "oneOfType");
   },
-  ArrayOfField: function(test) {
-    validate(FieldTypes.ArrayOfField(FieldTypes.BooleanField), test, [[true, true, false]], [true, [1,2,3]], "ArrayOfField");
+  arrayOf: function(test) {
+    validate(FieldTypes.arrayOf(FieldTypes.bool), test, [[true, true, false]], [true, [1,2,3]], "arrayOf");
   },
-  ObjectOfField: function(test) {
-    validate(FieldTypes.ObjectOfField(FieldTypes.NumberField), test, [{a: 2}, {b: Infinity}, [], function(){}, /asdf/], [{a: false}], "ObjectOfField");
+  objectOf: function(test) {
+    validate(FieldTypes.objectOf(FieldTypes.number), test, [{a: 2}, {b: Infinity}, [], function(){}, /asdf/], [{a: false}], "objectOf");
   },
 };
 
 chainability = {
   primitive: function (test) {
-    var g, f = FieldTypes.BooleanField;
+    var g, f = FieldTypes.bool;
     g = f.persists(true).defaults(true).required(true);
     test.strictEqual(g.persists_, true);
     test.strictEqual(g.required_, true);
@@ -69,7 +69,7 @@ chainability = {
     test.done(); 
   },
   complex: function (test) {
-    var f = FieldTypes.ArrayOfField(FieldTypes.BooleanField)
+    var f = FieldTypes.arrayOf(FieldTypes.bool)
       .persists(false)
       .defaults([false])
       .required(true);
