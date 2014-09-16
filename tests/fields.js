@@ -73,7 +73,7 @@ chainability = {
       .defaults([false])
       .required(true);
     test.strictEqual(f.persists_, false);
-    test.strictEqual(JSON.stringify(f.defaults_), JSON.stringify([false]));
+    test.deepEqual(f.defaults_, [false]);
     test.strictEqual(f.required_, true);
     test.done();
   },
