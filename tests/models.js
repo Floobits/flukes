@@ -100,30 +100,30 @@ events = {
 };
 
 creation = {
-  test_createModel: function(test) {
-    test.throws(function() {
-      flux.createModel({});
-    }, Error, "Empty models are not allowed");
-    test.done();
-  },
-  test_conciseModelCreation: function(test) {
-    var Model = flux.createModel({
-      submodel: {
-        field: FieldTypes.string
-      }
-    });
-    test.ok(new Model.submodel() instanceof Model.submodel);
-    test.done();
-  },
-  subField: function(test) {
-    var Model = flux.createModel({
-      submodel: [{
-        field: FieldTypes.string
-      }]
-    });
-    test.ok(new Model.submodel() instanceof Model.submodel);
-    test.done();
-  },
+  // test_createModel: function(test) {
+  //   test.throws(function() {
+  //     flux.createModel({});
+  //   }, Error, "Empty models are not allowed");
+  //   test.done();
+  // },
+  // test_conciseModelCreation: function(test) {
+  //   var Model = flux.createModel({
+  //     submodel: {
+  //       field: FieldTypes.string
+  //     }
+  //   });
+  //   test.ok(new Model.submodel() instanceof Model.submodel);
+  //   test.done();
+  // },
+  // subField: function(test) {
+  //   var Model = flux.createModel({
+  //     submodel: [{
+  //       field: FieldTypes.string
+  //     }]
+  //   });
+  //   test.ok(new Model.submodel() instanceof Model.submodel);
+  //   test.done();
+  // },
 };
 
 instantiation = {
@@ -160,8 +160,10 @@ instantiation = {
         field: FieldTypes.string.required(true)
       }
     });
-    debugger;
-    model = new Model();
+    test.throws(function() {
+      model = new Model();
+    }, Error, "Required field");
+    new Model({field: "asdf"});
     test.done();
   },
   List: function (test) {
@@ -182,7 +184,7 @@ instantiation = {
 };
 
 module.exports = {
-  // creation: creation,
-  // instantiation: instantiation,
+  creation: creation,
+  instantiation: instantiation,
   events: events
 };
