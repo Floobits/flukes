@@ -4,7 +4,7 @@ var flux = require("../lib/flux"),
   FieldTypes = flux.FieldTypes,
   creation, instantiation, events;
 
-events = {
+module.exports = {
   fields1: function(test) {
     var model, Model = flux.createModel({
       fieldTypes: {
@@ -85,6 +85,24 @@ events = {
       ]
     });
     test.equals(model.submodels.get(0).field, testField);
+    test.done();
+  },
+  inPlaceUpdate: function (test) {
+    var model, Model, SubModel, id;
+    SubModel = flux.createModel({
+      fieldTypes: {
+        field: FieldTypes.string
+      }
+    });
+    Model = flux.createModel({
+      fieldTypes: {
+        submodel: SubModel
+      }
+    });
+    model = new Model({submodel: new SubModel({field: "asdf"})});
+    id = model.submodel.id;
+    model.set({submodel: {field: "qwer"}});
+    test.equals(model.submodel.id, id);
     test.done();
   },
   // test_createModel: function(test) {
