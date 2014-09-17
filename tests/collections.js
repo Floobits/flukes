@@ -47,6 +47,13 @@ module.exports = {
     test.equal(model.length, 1);
     test.done();
   },
+  add_raw: function (test) {
+    var submodel = new SubModel({field: "asdf"});
+    model = new Model();
+    model.add(new SubModel({id: submodel.id}).valueOf());
+    test.equal(model.length, 1);
+    test.done();
+  },
   // dataCollectionSubFields: function(test) {
   //   var model, Model, SubModel, SubModels;
 
