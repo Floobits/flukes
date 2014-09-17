@@ -1,10 +1,10 @@
-"use strict()";
+"use strict";
 
 var flux = require("../lib/flux"), 
   util = require("util"),
   utils = require("../lib/utils"),
   FieldTypes = flux.FieldTypes, 
-  chainability, fields;
+  non_primitive, primitive;
 
 function validate(f, test, tValues, fValues, name) {
   utils.each(tValues, function(tValue) {
@@ -16,7 +16,7 @@ function validate(f, test, tValues, fValues, name) {
   test.done();
 }
 
-fields = {
+primitive = {
   bool: function(test) {
     validate(FieldTypes.bool, test, [false], [""], "bool");
   },
@@ -35,8 +35,32 @@ fields = {
   array: function(test) {
     validate(FieldTypes.array, test, [[]], [{}, 0, false, NaN], "array");
   },
+  chainability: function (test) {
+    var g, f = FieldTypes.bool;
+    g = f.persists(true).defaults(true).required(true);
+    test.strictEqual(g.persists_, true);
+    test.strictEqual(g.required_, true);
+    test.strictEqual(g.defaults_, true);
+    test.strictEqual(f.defaults_, false);
+    test.strictEqual(f.required_, false);
+    test.strictEqual(f.persists_, true);
+    test.done();
+  },
+};
+
+non_primitive = {
+  chainability: function (test) {
+    var f = FieldTypes.arrayOf(FieldTypes.bool)
+      .persists(false)
+      .defaults([false])
+      .required(true);
+    test.strictEqual(f.persists_, false);
+    test.deepEqual(f.defaults_, [false]);
+    test.strictEqual(f.required_, true);
+    test.done();
+  },
   oneOf: function(test) {
-    validate(FieldTypes.oneOf(["asdf", 0, fields]), test, ["asdf", 0, fields], [1, false, {}, []], "oneOf");
+    validate(FieldTypes.oneOf(["asdf", 0, primitive]), test, ["asdf", 0, primitive], [1, false, {}, []], "oneOf");
   },
   instanceOf: function(test) {
     var H, F = function () {};
@@ -54,31 +78,7 @@ fields = {
     validate(FieldTypes.objectOf(FieldTypes.number), test, [{a: 2}, {b: Infinity}, [], function(){}, /asdf/], [{a: false}], "objectOf");
   },
 };
-
-chainability = {
-  primitive: function (test) {
-    var g, f = FieldTypes.bool;
-    g = f.persists(true).defaults(true).required(true);
-    test.strictEqual(g.persists_, true);
-    test.strictEqual(g.required_, true);
-    test.strictEqual(g.defaults_, true);
-    test.strictEqual(f.defaults_, false);
-    test.strictEqual(f.required_, false);
-    test.strictEqual(f.persists_, true);
-    test.done();
-  },
-  complex: function (test) {
-    var f = FieldTypes.arrayOf(FieldTypes.bool)
-      .persists(false)
-      .defaults([false])
-      .required(true);
-    test.strictEqual(f.persists_, false);
-    test.deepEqual(f.defaults_, [false]);
-    test.strictEqual(f.required_, true);
-    test.done();
-  },
-};
 module.exports = {
-  fields: fields,
-  chainability: chainability
+  primitive: primitive,
+  non_primitive: non_primitive
 };

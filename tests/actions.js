@@ -5,7 +5,7 @@ var flux = require("../lib/flux"),
   FieldTypes = flux.FieldTypes,
   properties, events;
 
-properties = {
+module.exports = {
   setUp: function(cb) {
     this.randomField = "afai3ji32";
     this.Actions = flux.createActions({
@@ -126,7 +126,4 @@ properties = {
   tearDown: function(cb) {
     return cb();
   }
-};
-module.exports = {
-  properties: properties
 };
