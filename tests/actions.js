@@ -115,6 +115,14 @@ properties = {
     }, this);
     test.expect(3);
   },
+  staticChecking: function(test) {
+    this.actions.onSUM(function(sum) {
+      test.equals(sum, 3);
+    });
+    this.actions.sum(1, 2);
+    test.expect(1);
+    test.done();
+  },
   tearDown: function(cb) {
     return cb();
   }
