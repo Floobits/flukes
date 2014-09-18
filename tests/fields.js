@@ -37,13 +37,13 @@ primitive = {
   },
   chainability: function (test) {
     var g, f = FieldTypes.bool;
-    g = f.persists(true).defaults(true).required(true);
-    test.strictEqual(g.persists_, true);
-    test.strictEqual(g.required_, true);
-    test.strictEqual(g.defaults_, true);
-    test.strictEqual(f.defaults_, false);
-    test.strictEqual(f.required_, false);
-    test.strictEqual(f.persists_, true);
+    g = f.ephemeral().defaults(true).required();
+    test.strictEqual(g.isEphemeral, true);
+    test.strictEqual(g.isRequired, true);
+    test.strictEqual(g.defaultsTo, true);
+    test.strictEqual(f.defaultsTo, false);
+    test.strictEqual(f.isRequired, false);
+    test.strictEqual(f.isEphemeral, false);
     test.done();
   },
 };
@@ -51,12 +51,12 @@ primitive = {
 non_primitive = {
   chainability: function (test) {
     var f = FieldTypes.arrayOf(FieldTypes.bool)
-      .persists(false)
+      .ephemeral()
       .defaults([false])
-      .required(true);
-    test.strictEqual(f.persists_, false);
-    test.deepEqual(f.defaults_, [false]);
-    test.strictEqual(f.required_, true);
+      .required();
+    test.strictEqual(f.isEphemeral, true);
+    test.deepEqual(f.defaultsTo, [false]);
+    test.strictEqual(f.isRequired, true);
     test.done();
   },
   oneOf: function(test) {
