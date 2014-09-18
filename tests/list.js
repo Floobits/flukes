@@ -4,18 +4,27 @@ var flux = require("../lib/flux"),
   FieldTypes = flux.FieldTypes,
   creation, instantiation, events;
 
+/**
+ * @param {Array}
+ */
+function setupModel(testField) {
+  var Model, model;
+  Model = flux.createModel({
+    fieldTypes: {
+      list: FieldTypes.list
+    }
+  });
+  model = new Model({
+    list: testField
+  });
+  return model;
+}
+
 module.exports = {
   events: function (test) {
-    var Model, model, testField = [1];
+    var model;
 
-    Model = flux.createModel({
-      fieldTypes: {
-        list: FieldTypes.list
-      }
-    });
-    model = new Model({
-      list: testField
-    });
+    model = setupModel([1]);
     model.on(function () {
       test.deepEqual(model.list.valueOf(), [1, 1]);
       test.done();
@@ -24,18 +33,26 @@ module.exports = {
     test.expect(1);
   },
   creation: function (test) {
-    var model, Model, SubModel, SubModels,
-      testField = [1,2,3];
+    var model, SubModel, SubModels, testField = [1, 2, 3];
 
-    Model = flux.createModel({
-      fieldTypes: {
-        list: FieldTypes.list
-      }
-    });
-    model = new Model({
-      list: testField
-    });
+    model = setupModel(testField);
     test.deepEqual(model.list.valueOf(), testField);
     test.done();
-  }
+  },
+  toggleAdds: function (test) {
+    var model, testField = [1, 2, 3], resultField = [1, 2, 3, 4];
+    model = setupModel(testField);
+    test.ok(model.list.toggle(4), "Should return true because 4 was added.");
+    test.deepEqual(model.list.valueOf(), resultField, "Should have added 4.");
+    test.expect(2);
+    test.done();
+  },
+  toggleRemoves: function (test) {
+    var model, testField = [1, 2, 3, 4, 4], resultField = [1, 2, 3];
+    model = setupModel(testField);
+    test.ok(!model.list.toggle(4), "Should return false because 4's were removed.");
+    test.deepEqual(model.list.valueOf(), resultField, "Should have removed 4's.");
+    test.expect(2);
+    test.done();
+  },
 };
