@@ -1,5 +1,4 @@
 var flux = require("../lib/flux"), 
-  _ = require("lodash"),
   utils = require("../lib/utils"),
   FieldTypes = flux.FieldTypes, 
   localStore = flux.backends.local,
