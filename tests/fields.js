@@ -36,11 +36,14 @@ primitive = {
     validate(FieldTypes.array, test, [[]], [{}, 0, false, NaN], "array");
   },
   chainability: function (test) {
-    var g, f = FieldTypes.bool;
+    var g, f;
+    f = FieldTypes.bool;
     g = f.ephemeral().defaults(true).required();
+    
     test.strictEqual(g.isEphemeral, true);
     test.strictEqual(g.isRequired, true);
     test.strictEqual(g.defaultsTo, true);
+
     test.strictEqual(f.defaultsTo, false);
     test.strictEqual(f.isRequired, false);
     test.strictEqual(f.isEphemeral, false);
@@ -78,6 +81,7 @@ non_primitive = {
     validate(FieldTypes.objectOf(FieldTypes.number), test, [{a: 2}, {b: Infinity}, [], function(){}, /asdf/], [{a: false}], "objectOf");
   },
 };
+
 module.exports = {
   primitive: primitive,
   non_primitive: non_primitive
