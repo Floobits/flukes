@@ -74,7 +74,7 @@ module.exports = {
     });
     model.set([submodelValueOf]);
     test.expect(3);
-  }
+  },
   // dataCollectionSubFields: function(test) {
   //   var model, Collection, Model, SubModels;
 
