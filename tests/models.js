@@ -105,6 +105,18 @@ module.exports = {
     test.equals(model.submodel.id, id);
     test.done();
   },
+  valueOf: function (test) {
+    var model, Model;
+    Model = flux.createModel({
+      fieldTypes: {
+        field1: FieldTypes.string,
+        field2: FieldTypes.string.ephemeral(),
+        id: FieldTypes.number.ephemeral(),
+      }
+    });
+    test.deepEqual(new Model({field1: "1", field2: "2"}).valueOf(), {field1: "1"});
+    test.done();
+  }
   // test_createModel: function(test) {
   //   test.throws(function() {
   //     flux.createModel({});

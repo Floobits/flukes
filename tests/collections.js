@@ -61,7 +61,7 @@ module.exports = {
     model = new Collection([{field: "0"}, {field: "1"}]);
     test.equal(model.length, 2);
     submodelId = model.valueOf()[0].id;
-    submodel = model.get(submodelId)
+    submodel = model.get(submodelId);
     submodelValueOf = submodel.valueOf();
     submodelValueOf.field = "0a";
     submodel.on(function () {
