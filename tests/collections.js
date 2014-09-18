@@ -2,9 +2,9 @@
 
 var flux = require("../lib/flux"),
   FieldTypes = flux.FieldTypes,
-  Model, model, SubModel;
+  Collection, model, Model;
 
-SubModel = flux.createModel({
+Model = flux.createModel({
   modelName: "sub",
   fieldTypes: {
     field: FieldTypes.string,
@@ -12,15 +12,16 @@ SubModel = flux.createModel({
   }
 });
 
-Model = flux.createCollection({
+Collection = flux.createCollection({
   modelName: "subs",
-  model: SubModel
+  model: Model
 });
 
 module.exports = {
   creation: function(test) {
-    model = new Model();
-    model.add(new SubModel({field: "asdf"}));
+
+    model = new Collection();
+    model.add(new Model({field: "asdf"}));
     model.on(function() {
       test.done();
     });
@@ -28,36 +29,56 @@ module.exports = {
     test.expect(1);
   },
   valueOf: function (test) {
-    var submodel = new SubModel({field: "asdf"});
-    model = new Model([submodel]);
+    var submodel = new Model({field: "asdf"});
+    model = new Collection([submodel]);
     test.deepEqual(model.valueOf(), [{ field: 'asdf', field2: '', id: 1 }]);
     test.done();
   },
   ids_set: function (test) {
-    var submodel = new SubModel({field: "asdf"});
-    model = new Model([submodel]);
-    model.set([submodel, new SubModel({id: submodel.id})]);
+    var submodel = new Model({field: "asdf"});
+    model = new Collection([submodel]);
+    model.set([submodel, new Model({id: submodel.id})]);
     test.equal(model.length, 1);
     test.done();
   },
   ids_add: function (test) {
-    var submodel = new SubModel({field: "asdf"});
-    model = new Model([submodel]);
-    model.add(new SubModel({id: submodel.id}));
+    var submodel = new Model({field: "asdf"});
+    model = new Collection([submodel]);
+    model.add(new Model({id: submodel.id}));
     test.equal(model.length, 1);
     test.done();
   },
   add_raw: function (test) {
-    var submodel = new SubModel({field: "asdf"});
-    model = new Model();
-    model.add(new SubModel({id: submodel.id}).valueOf());
+    var submodel = new Model({field: "asdf"});
+    model = new Collection();
+    model.add(new Model({id: submodel.id}).valueOf());
     test.equal(model.length, 1);
     test.done();
   },
-  // dataCollectionSubFields: function(test) {
-  //   var model, Model, SubModel, SubModels;
+  set_raw: function (test) {
+    var submodel, submodelId, submodelValueOf;
 
-  //   SubModel = flux.createModel({
+    model = new Collection([{field: "0"}, {field: "1"}]);
+    test.equal(model.length, 2);
+    submodelId = model.valueOf()[0].id;
+    submodel = model.get(submodelId)
+    submodelValueOf = submodel.valueOf();
+    submodelValueOf.field = "0a";
+    submodel.on(function () {
+      test.equal(model.get(submodelId).field, "0a");
+    });
+    model.on(function() {
+      test.equal(model.length, 1);
+      test.equal(submodel.field, submodelValueOf.field);      
+      test.done();
+    });
+    model.set([submodelValueOf]);
+    test.expect(3);
+  }
+  // dataCollectionSubFields: function(test) {
+  //   var model, Collection, Model, SubModels;
+
+  //   Model = flux.createModel({
   //     modelName: "sub",
   //     fieldTypes: {
   //       field: FieldTypes.string
@@ -65,17 +86,17 @@ module.exports = {
   //   });
   //   SubModels = flux.createCollection({
   //     modelName: "subs",
-  //     model: SubModel
+  //     model: Model
   //   });
-  //   Model = flux.createModel({
+  //   Collection = flux.createModel({
   //     modelName: "top",
   //     fieldTypes: {
   //       submodels: SubModels 
   //     }
   //   });
-  //   model = new Model();
+  //   model = new Collection();
   //   model.submodels = new SubModels();
-  //   model.submodels.add(new SubModel({field: "asdf"}));
+  //   model.submodels.add(new Model({field: "asdf"}));
   //   model.on(function(name) {
   //     test.equals("submodels.field", name);
   //     test.done();
