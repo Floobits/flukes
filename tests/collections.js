@@ -14,7 +14,17 @@ Model = flux.createModel({
 
 Collection = flux.createCollection({
   modelName: "subs",
-  model: Model
+  model: Model,
+  sort: function (a, b) {
+    var aLen = a.field.length, bLen = b.field.length;
+    if (aLen < bLen) {
+      return -1;
+    }
+    if (aLen === bLen) {
+      return 0;
+    }
+    return 1;
+  }
 });
 
 module.exports = {
@@ -74,6 +84,15 @@ module.exports = {
     });
     model.set([submodelValueOf]);
     test.expect(3);
+  },
+  sorting: function (test) {
+    var startingLen = 0;
+    model = new Collection([{field: "1"}, {field: "1234"}, {field: "12"}, {field: "123"}]);
+    model.sort();
+    model.map(function (m) {
+      test.equals(m.field.length, ++startingLen);
+    });
+    test.done();
   },
   // dataCollectionSubFields: function(test) {
   //   var model, Collection, Model, SubModels;
