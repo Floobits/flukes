@@ -1,6 +1,10 @@
 #flux
 ====
 
+[![Build Status](https://travis-ci.org/Floobits/flukes.svg)](https://travis-ci.org/Floobits/flukes)
+
+[![NPM version](https://badge.fury.io/js/flukes.svg)](http://badge.fury.io/js/flukes)
+
 Floobit's Flux is an implementation of Facebook's Flux architecture for React.  If React is the V in MVC, Flux is the M. Flux attemps to remove all boilerplate from React while providing light wieght models and event emitters. 
 
 ##Design Goals
