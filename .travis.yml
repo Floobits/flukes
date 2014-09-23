@@ -9,4 +9,4 @@ branches:
     - master
 
 script:
-  - npm build && ./jshint.sh && npm test
+  - npm run build && ./jshint.sh && npm test
