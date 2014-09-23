@@ -28,6 +28,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "jshint": "2.4.x",
     "nodeunit": ">=0.9.0",
     "webpack": ">=1.4.0-beta9"
   },
