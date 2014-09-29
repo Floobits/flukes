@@ -94,6 +94,32 @@ module.exports = {
     model.set([submodelValueOf]);
     test.expect(3);
   },
+  splicing: function (test) {
+    var removed;
+    model = new Collection([{field: "1"}, {field: "2"}, {field: "3"}, {field: "4"}]);
+    removed = model.splice(2);
+    test.equals(removed.length, 2);
+    test.equals(removed[0].field, "3");
+    test.equals(removed[1].field, "4");
+    test.equals(model.length, 2);
+
+    model.splice(0, 0, {field: "5"});
+    test.equals(model.byIndex(0).field, "5");
+    test.equals(model.byIndex(1).field, "1");
+    test.equals(model.byIndex(2).field, "2");
+    test.equals(model.byIndex(-1).field, "2");
+    test.equals(model.byIndex(-2).field, "1");
+    test.equals(model.length, 3);
+
+    removed = model.splice(-1);
+    test.equals(removed[0].field, "2");
+    test.equals(model.byIndex(0).field, "5");
+    test.equals(model.byIndex(1).field, "1");
+    test.equals(model.byIndex(-1).field, "1");
+    test.equals(model.length, 2);
+
+    test.done();
+  },
   sorting: function (test) {
     var startingLen = 0;
     model = new Collection([{field: "1"}, {field: "1234"}, {field: "12"}, {field: "123"}]);
