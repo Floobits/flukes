@@ -29,7 +29,6 @@ Collection = flux.createCollection({
 
 module.exports = {
   creation: function(test) {
-
     model = new Collection();
     model.add(new Model({field: "asdf"}));
     model.on(function() {
@@ -56,6 +55,16 @@ module.exports = {
     model = new Collection([submodel]);
     model.add(new Model({id: submodel.id}));
     test.equal(model.length, 1);
+    test.done();
+  },
+  ids_add_index: function (test) {
+    model = new Collection();
+    model.add(new Model({id: 0}));
+    model.add(new Model({id: 1}), 0);
+    model.add(new Model({id: 2}), 1);
+    test.equal(model.length, 3);
+    test.equal(model.byIndex(0).id, 1);
+    test.equal(model.byIndex(1).id, 2);
     test.done();
   },
   add_raw: function (test) {
