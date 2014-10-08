@@ -8,7 +8,8 @@ module.exports = {
     path: __dirname,
     filename: "flux.js",
     libraryTarget: "commonjs2",
-    library: "flux"
+    library: "flux",
+    sourcePrefix: ""
   },
   externals: [
   ],
