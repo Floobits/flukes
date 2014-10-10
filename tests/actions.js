@@ -123,6 +123,17 @@ module.exports = {
     test.expect(1);
     test.done();
   },
+  init: function (test) {
+    var action, Action = flux.createActions({
+      init: function (a, b) {
+        test.equals(a, 1);
+        test.equals(b, 2);
+      }
+    });
+    test.expect(2);
+    action = new Action(1, 2);
+    test.done();
+  },
   tearDown: function(cb) {
     return cb();
   }
