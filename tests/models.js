@@ -116,13 +116,7 @@ module.exports = {
     });
     test.deepEqual(new Model({field1: "1", field2: "2"}).valueOf(), {field1: "1"});
     test.done();
-  }
-  // test_createModel: function(test) {
-  //   test.throws(function() {
-  //     flux.createModel({});
-  //   }, Error, "Empty models are not allowed");
-  //   test.done();
-  // },
+  },
   // test_conciseModelCreation: function(test) {
   //   var Model = flux.createModel({
   //     submodel: {

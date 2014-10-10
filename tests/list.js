@@ -21,38 +21,53 @@ function setupModel(testField) {
 }
 
 module.exports = {
-  events: function (test) {
-    var model;
+  // events: function (test) {
+  //   var model;
 
-    model = setupModel([1]);
-    model.on(function () {
-      test.deepEqual(model.list.valueOf(), [1, 1]);
-      test.done();
+  //   model = setupModel([1]);
+  //   model.on(function () {
+  //     test.deepEqual(model.list.valueOf(), [1, 1]);
+  //     test.done();
+  //   });
+  //   model.list.push(1);
+  //   test.expect(1);
+  // },
+  // creation: function (test) {
+  //   var model, SubModel, SubModels, testField = [1, 2, 3];
+
+  //   model = setupModel(testField);
+  //   test.deepEqual(model.list.valueOf(), testField);
+  //   test.done();
+  // },
+  // toggleAdds: function (test) {
+  //   var model, testField = [1, 2, 3], resultField = [1, 2, 3, 4];
+  //   model = setupModel(testField);
+  //   test.ok(model.list.toggle(4), "Should return true because 4 was added.");
+  //   test.deepEqual(model.list.valueOf(), resultField, "Should have added 4.");
+  //   test.expect(2);
+  //   test.done();
+  // },
+  // toggleRemoves: function (test) {
+  //   var model, testField = [1, 2, 3, 4, 4], resultField = [1, 2, 3];
+  //   model = setupModel(testField);
+  //   test.ok(!model.list.toggle(4), "Should return false because 4's were removed.");
+  //   test.deepEqual(model.list.valueOf(), resultField, "Should have removed 4's.");
+  //   test.expect(2);
+  //   test.done();
+  // },
+  defaults: function (test) {
+    var model, Model = flux.createModel({
+      fieldTypes: {
+        list: FieldTypes.list,
+      },
+      getDefaultFields: function () {
+        return {};
+      }
     });
-    model.list.push(1);
-    test.expect(1);
-  },
-  creation: function (test) {
-    var model, SubModel, SubModels, testField = [1, 2, 3];
+        debugger;
+    model = new Model();
 
-    model = setupModel(testField);
-    test.deepEqual(model.list.valueOf(), testField);
+    model.list.push(1);
     test.done();
-  },
-  toggleAdds: function (test) {
-    var model, testField = [1, 2, 3], resultField = [1, 2, 3, 4];
-    model = setupModel(testField);
-    test.ok(model.list.toggle(4), "Should return true because 4 was added.");
-    test.deepEqual(model.list.valueOf(), resultField, "Should have added 4.");
-    test.expect(2);
-    test.done();
-  },
-  toggleRemoves: function (test) {
-    var model, testField = [1, 2, 3, 4, 4], resultField = [1, 2, 3];
-    model = setupModel(testField);
-    test.ok(!model.list.toggle(4), "Should return false because 4's were removed.");
-    test.deepEqual(model.list.valueOf(), resultField, "Should have removed 4's.");
-    test.expect(2);
-    test.done();
-  },
+  }
 };
