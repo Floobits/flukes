@@ -1,6 +1,7 @@
 "use strict";
 
 var flux = require("../lib/flux"),
+  utils = require("../lib/utils"),
   FieldTypes = flux.FieldTypes,
   creation, instantiation, events;
 
@@ -115,6 +116,19 @@ module.exports = {
       }
     });
     test.deepEqual(new Model({field1: "1", field2: "2"}).valueOf(), {field1: "1"});
+    test.done();
+  },
+  dontSetThingsNotInSchema: function (test) {
+    var model, Model;
+    Model = flux.createModel({
+      fieldTypes: {
+        field1: FieldTypes.string,
+      }
+    });
+    model = new Model();
+    model.set({field1: "2", bad: 3});
+    test.ok(utils.isUndefined(model.bad));
+    test.deepEqual(model.valueOf(), {field1: "2", id: model.id});
     test.done();
   },
   // test_conciseModelCreation: function(test) {
