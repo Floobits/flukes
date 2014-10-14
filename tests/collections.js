@@ -129,6 +129,41 @@ module.exports = {
     });
     test.done();
   },
+  incompleteLoad: function (test) {
+    var collection, Collection, Model = flux.createModel({
+      fieldTypes: {
+        f: FieldTypes.number.required(),
+      }
+    });
+
+    Collection = flux.createCollection({
+      modelName: "subs",
+      model: Model,
+    });
+
+    collection = new Collection();
+    test.equals(collection.set([{f: 1}, {}]), 1);
+    test.done();
+  },
+  strictMode: function (test) {
+    var collection, Collection, Model = flux.createModel({
+      fieldTypes: {
+        f: FieldTypes.number.required(),
+      }
+    });
+
+    Collection = flux.createCollection({
+      modelName: "subs",
+      model: Model,
+      strict: true,
+    });
+
+    collection = new Collection();
+    test.throws(function() {
+      collection.set([{f: 1}, {}]);
+    });
+    test.done();
+  },
   // dataCollectionSubFields: function(test) {
   //   var model, Collection, Model, SubModels;
 

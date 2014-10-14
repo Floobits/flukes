@@ -130,7 +130,7 @@ module.exports = {
     test.ok(utils.isUndefined(model.bad));
     test.deepEqual(model.valueOf(), {field1: "2", id: model.id});
     test.done();
-  },
+  }
   // test_conciseModelCreation: function(test) {
   //   var Model = flux.createModel({
   //     submodel: {

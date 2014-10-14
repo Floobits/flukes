@@ -64,7 +64,6 @@ module.exports = {
         return {};
       }
     });
-        debugger;
     model = new Model();
 
     model.list.push(1);
