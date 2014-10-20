@@ -37,7 +37,7 @@ events.off();
 #### <a name="Actions"></a>Actions
 A Flux Action is a public, (typically) static event emitter with a well defined interface.  
 
-Evented code often relies on event emitters with callbacks.  In practice, raw emitters are error prone.  Binding to the incorrect event (mispelling the name) results in code that is never called, not an exception.  Objects tend to come and go including both the emitter and handler.  Finally, optionally binding and unbinding events is often necessary and results in intractable spaghetti code.
+Evented code often relies on event emitters with callbacks.  In practice, raw emitters are error prone.  Binding to the incorrect event (mispelling the name) results in code that is never called, not an exception.  Objects tend to come and go including both the emitter and handler.  Finally, optionally binding events is often necessary and results in intractable spaghetti code.
 
 ####*(Synchronous)* Actions
 ```javascript
@@ -123,26 +123,67 @@ actions.async_sum(1, 2, function(sum) {
 
 The callback to *actions.async_sum* will not be called until both listeners have fired their callback.
 
-#### <a name="Models"></a>Models (Stores)
+####<a name="Models"></a>Models (Stores)
 
-Flux Models are the canonical source of truth and provide a well defined interface for mutating state.  
+Flux Models are the canonical source of truth within an application and provide a well defined interface for mutating state.
 
-React Components may contain state (and update themselves on state changes), but in practice most React components are stateless apart from their props.  Outside of props as state, only the component (a View) can access or mutate the state.
+####Motivation
+Props and State in React Components are nearly always insufficient for reactive rendering on their own. In practice, state is populated from a database or perhaps localstorage. It travels through some intermediate representation before Components exist meaning State is __not__ the canonical source of truth for the rest of the application.  Components only react to state changes, so props can not be used without boilerplate.  State is likely a subset of the data so it must be serialized and __merged__ before permanent storage. Finally, user interactions which mutate the same state can span __multiple__ Components.
 
-Models may contain references to other Models; change events proprogate upwards.  Typically, it is only necessary to bind to the root level module to a React Component because React (Javascript) is fast.
+React components can bind to models via the (AutoBinder Mixin)[#AutoBinder]; the component will be rerendered automagically when the model changes.  Models may contain references to other models.  In this case, change events proprogate up the chain. Typically, you should only bind the root level model.  
 
-####DataModel
-A heterogenous data container.
+Models come in three flavors:
+- [DataModel](#DataModel) - a heterogenous container (sometimes called a Model)
+- [Collection](#Collection) - a homogenous ordered set of a Model
+- [List](#List) - a heterogenous list (children are not bound)
 
-####Collection
+####<a name="DataModel"></a>DataModel
+DataModels are the workhorse of Flux.  They are modeled after React Components and may contain references to other Models, Lists, or Collections.
+
+####<a name="Collection"></a>Collection
 
 A collection is an ordered set of DataModels. Collections are homogenous.  When a model changes, the Collection emits a change event.
 
-####List
-A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.
+####<a name="List"></a>List
+A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists only update when members are added or removed.
 
-#### <a name="AutoBinder"></a>AutoBinder (Binding to React Components)
-Binds Models state to React Components.  When Model's state changes, it calls forceupdate.
+#### <a name="AutoBinder"></a>AutoBinder Mixin (Binding to React Components)
+Binds Models state to React Components.  When Model's state changes, it calls forceupdate.  Consider the following model and component:
+
+```javascript
+Model = flux.createModel({
+  fieldTypes: {
+    field: FieldTypes.string,
+  }
+});
+
+aModelProp = new Model({field: "b"});
+    
+View = React.createClass({
+  mixins: [flux.createAutoBinder(["aModelProp"])],
+  render: function () {...}
+});
+
+React.renderComponent(<View aProp={aModelProp} />, document.getElementById("view"));
+```
+In the typical case, some Model is passed to the View as a prop.  The variable __aModelProp__  is bound after the model is created and any change in the model will call the forceUpdate function on the view.  
+
+Dots can be used if the Model is buried within some descendant of the prop:
+```javascript
+View = React.createClass({
+  mixins: [flux.createAutoBinder(["prop.child.Model"])],
+  render: function () {...}
+});
+```
+
+Models can also be bassed to the mixin directly:
+```javascript
+someModel = new Model({field: "b"});
+View = React.createClass({
+  mixins: [flux.createAutoBinder([], [someModel])],
+  render: function () {...}
+});
+```
 
 #### <a name="BestPractices"></a>BestPractices
 ###Actions are Singletons
