@@ -10,9 +10,27 @@ Floobit's Flux is an implementation of Facebook's [Flux](http://facebook.github.
 Flux is minimal, modern, and designed for reactive programing.  It choices ease of use and development over legacy suport.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
 
 ##Components:
+- [Events](#Events) - Binding and Unbinding
 - [Actions](#Actions) - Signaling Changes in State
 - [Models](#Models) - Canonical State
 - [AutoBinder](#AutoBinder) - Binding to React Components
+- [BestPractices](#BestPractices)
+
+#### <a name="Events"></a>Events
+Keeping reference to callbacks for unbinding is cumbersome because callbacks are typically anonymous functions.  Instead, binding to an event returns an number.
+
+
+```javascript
+var events = SomeEventEmitter();
+// binds to all events
+var id = events.on(function () {});
+// binds to SomeEvent
+var onSomeEventId = events.on('SomeEvent', function () {});
+// unbinding
+events.off(id);
+// unbinds all handlers
+events.off();
+```
 
 #### <a name="Actions"></a>Actions
 A Flux Action is a public, static event emitter with a well defined interface.  
@@ -22,28 +40,28 @@ Evented code typically relies on event emitters with callbacks.  In practice, ra
 Actions should be created during startup.
 
 ####*(Synchronous)* Actions
-```
-> var actions, Actions = flux.createActions({
+```javascript
+var actions, Actions = flux.createActions({
   sum: function(a, b) {
     return a + b;
   }
 });
-> actions = new Actions();
+actions = new Actions();
 
-> actions.SUM
-'SUM'
-> actions.sum
-[Function]
+console.log(actions.SUM);
+// 'SUM'
+console.log(actions.sum);
+// [Function]
 ```
 ***flux.createActions*** returns a *constructor*- you must call *new* to make the *Actions* object.  *actions* has a *SUM* field ("SUM") and a *sum* function (emitter).
 
-```
-> actions.on(function(name, data) {
+```javascript
+actions.on(function(name, data) {
   console.log(name, data);
 });
 
-> actions.sum(1, 2);
-SUM 3
+console.log(actions.sum(1, 2));
+// SUM 3
 ```
 
 A few notes:
@@ -58,7 +76,7 @@ A few notes:
 
 
 A shorthand exists to avoid switch statements, but multiple bindings is probably an antipattern:
-```
+```javascript
 actions.on(actions.SUM, function(name, data) {
   console.log(name, data);
 });
@@ -67,7 +85,7 @@ actions.on(actions.SUM, function(name, data) {
 
 Some actions have handlers that are asynchronous.  It is often necessary to take some further action after all the dispatchers have completed.  Asynchronous actions solve this problem.
 
-```
+```javascript
 var actions = new (flux.createActions({
   async_sum: function(a, b) {
     return a + b;
@@ -89,7 +107,7 @@ The callback to *actions.async_sum* will not be called until both listeners have
 
 #### <a name="Models"></a>Models (Stores)
 
-Flux Models are the canonical source of truth for data and provide a well defined interface for mutating state.  
+Flux Models are the canonical source of truth and provide a well defined interface for mutating state.  
 
 React Components may contain state (and update themselves on state changes), but in practice most React components are stateless apart from their props.  Outside of props as state, only the component (a View) can access or mutate the state.
 
@@ -107,3 +125,7 @@ A thin wrapper around arrays because general getters (Harmony) haven't landed in
 
 #### <a name="AutoBinder"></a>AutoBinder (Binding to React Components)
 Binds Models state to React Components.  When Model's state changes, it calls forceupdate.
+
+#### <a name="BestPractices"></a>BestPractices
+###Actions are Singletons
+###Avoiding Model Passthrough
