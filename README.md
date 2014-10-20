@@ -5,10 +5,10 @@
 
 [![NPM version](https://badge.fury.io/js/flukes.svg)](http://badge.fury.io/js/flukes)
 
-Floobit's Flux is an implementation of Facebook's Flux architecture for React.  If React is the V in MVC, Flux is the M. Flux attemps to remove all boilerplate from React while providing light wieght models and event emitters. 
+Floobit's Flux is an implementation of Facebook's [Flux](http://facebook.github.io/react/docs/flux-overview.html) architecture for React.  Flux attemps to remove all boilerplate from React while providing light wieght models and event emitters. If React is the V in MVC, Flux is the M.
 
 ##Design Goals
-Flux is an attempt at a minimal, modern, front end framework.  To that end, it uses getters/setters and does not currently support ie9 or earlier.
+Flux is minimal, modern, and designed for reactive programing.  Whenever a choice exists between ease of use and compatability, Flux choices the former.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
 
 ##Components
 
