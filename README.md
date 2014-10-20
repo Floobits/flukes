@@ -130,7 +130,7 @@ Flux Models are the canonical source of truth within an application and provide 
 ####Motivation
 Props and State in React Components are nearly always insufficient for reactive rendering on their own. In practice, state is populated from a database or perhaps localstorage. It travels through some intermediate representation before Components exist meaning State is __not__ the canonical source of truth for the rest of the application.  Components only react to state changes, so props can not be used without boilerplate.  State is likely a subset of the data so it must be serialized and __merged__ before permanent storage. Finally, user interactions which mutate the same state can span __multiple__ Components.
 
-React components can bind to models via the (AutoBinder Mixin)[#AutoBinder]; the component will be rerendered automagically when the model changes.  Models may contain references to other models.  In this case, change events proprogate up the chain. Typically, you should only bind the root level model.  
+React components can bind to models via the [AutoBinder Mixin](#AutoBinder); the component will be rerendered automagically when the model changes.  Models may contain references to other models.  In this case, change events proprogate up the chain. Typically, you should only bind the root level model.  
 
 Models come in three flavors:
 - [DataModel](#DataModel) - a heterogenous container (sometimes called a Model)
@@ -148,7 +148,7 @@ A collection is an ordered set of DataModels. Collections are homogenous.  When 
 A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists only update when members are added or removed.
 
 #### <a name="AutoBinder"></a>AutoBinder Mixin (Binding to React Components)
-Binds Models state to React Components.  When Model's state changes, it calls forceupdate.  Consider the following model and component:
+The AutoBinder Mixin is glue for binding Models to  Components.  When the Model's state changes, the mixin calls forceupdate on the Component ensuring it is rerendered.  Consider the following model and component:
 
 ```javascript
 Model = flux.createModel({
@@ -176,7 +176,7 @@ View = React.createClass({
 });
 ```
 
-Models can also be bassed to the mixin directly:
+Models can be passed to the mixin directly:
 ```javascript
 someModel = new Model({field: "b"});
 View = React.createClass({
