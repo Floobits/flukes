@@ -4,10 +4,10 @@
 
 [![NPM version](https://badge.fury.io/js/flukes.svg)](http://badge.fury.io/js/flukes)
 
-Floobit's Flux is an implementation of Facebook's [Flux](http://facebook.github.io/react/docs/flux-overview.html) architecture for React.  Flux attemps to remove all boilerplate from React while providing light wieght models and event emitters. If React is the V in MVC, Flux is the M.
+Floobit's Flux is an implementation of Facebook's [Flux](http://facebook.github.io/react/docs/flux-overview.html) architecture for React.  Flux is minimal, modern, and designed for boilerplate-free reactive programing. If React is the V in MVC, Flux is the M.
 
 ##Design Goals
-Flux is minimal, modern, and designed for reactive programing.  It choices ease of use and development over legacy suport.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
+Flux choices ease of use and development over legacy suport.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
 
 ##Components:
 - [Events](#Events) - Binding and Unbinding
@@ -17,7 +17,7 @@ Flux is minimal, modern, and designed for reactive programing.  It choices ease 
 - [BestPractices](#BestPractices)
 
 #### <a name="Events"></a>Events
-Keeping reference to callbacks for unbinding is cumbersome because callbacks are typically anonymous functions.  Instead, binding to an event returns an number.
+Event binding breaks from the NodeJS convention by returning a unique ID (number).  
 
 
 ```javascript
@@ -26,9 +26,11 @@ var events = SomeEventEmitter();
 var id = events.on(function () {});
 // binds to SomeEvent
 var onSomeEventId = events.on('SomeEvent', function () {});
-// unbinding
+// unbind onSomeEventId handler
 events.off(id);
-// unbinds all handlers
+// unbind all 'SomeEvent' handlers
+events.off('SomeEvent');
+// unbind all handlers
 events.off();
 ```
 
@@ -129,3 +131,4 @@ Binds Models state to React Components.  When Model's state changes, it calls fo
 #### <a name="BestPractices"></a>BestPractices
 ###Actions are Singletons
 ###Avoiding Model Passthrough
+Nested React Components tend to generate extreme variable pass-through.  Often, variables (models for presentation) must be handed through several layers of layout controlling components before they are used.  This anti-pattern may be avoided in Flux in the case of model singletons.  Export the singleton so that leaf nodes can require it.  Instead of changing the model directly, alter the state of the model within actions and return the instance from the action.
