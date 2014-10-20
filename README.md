@@ -7,13 +7,12 @@
 Floobit's Flux is an implementation of Facebook's [Flux](http://facebook.github.io/react/docs/flux-overview.html) architecture for React.  Flux attemps to remove all boilerplate from React while providing light wieght models and event emitters. If React is the V in MVC, Flux is the M.
 
 ##Design Goals
-Flux is minimal, modern, and designed for reactive programing.  It choices ease of use and development over suport for dated browsers.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
+Flux is minimal, modern, and designed for reactive programing.  It choices ease of use and development over legacy suport.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
 
 ##Components:
-[Actions](#Actions)
-[AsyncActions](#AsyncActions)
-[Models](#Models)
-[AutoBinder](#AutoBinder - Binding to React Components))
+- [Actions](#Actions) - Signaling Changes in State
+- [Models](#Models) - Canonical State
+- [AutoBinder](#AutoBinder) - Binding to React Components
 
 #### <a name="Actions"></a>Actions
 A Flux Action is a public, static event emitter with a well defined interface.  
