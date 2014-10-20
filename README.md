@@ -35,11 +35,9 @@ events.off();
 ```
 
 #### <a name="Actions"></a>Actions
-A Flux Action is a public, static event emitter with a well defined interface.  
+A Flux Action is a public, (typically) static event emitter with a well defined interface.  
 
-Evented code typically relies on event emitters with callbacks.  In practice, raw emitters are error prone because objects come and go (including the emitter itself)-  binding and unbinding callbacks, and emitting events often results in intractable spaghetti code.
-
-Actions should be created during startup.
+Evented code often relies on event emitters with callbacks.  In practice, raw emitters are error prone.  Binding to the incorrect event (mispelling the name) results in code that is never called, not an exception.  Objects tend to come and go including both the emitter and handler.  Finally, optionally binding and unbinding events is often necessary and results in intractable spaghetti code.
 
 ####*(Synchronous)* Actions
 ```javascript
@@ -62,8 +60,33 @@ actions.on(function(name, data) {
   console.log(name, data);
 });
 
+//'static' checking
+actions.onSUM(function (data) {
+  console.log("onSum", data);
+});
+
 console.log(actions.sum(1, 2));
 // SUM 3
+// onSum 3
+
+//don't do this!
+actions.on(actions.SUM, function (data) {});
+```
+
+Actions also support the special property, ***init***, which is called after instantiation.
+
+```javascript
+var actions, Actions = flux.createActions({
+  sum: function(b) {
+    return this.a + b;
+  },
+  init: function (a) {
+    this.a = a;
+  }
+});
+
+actions = new Actions(1);
+actions.sum(2);
 ```
 
 A few notes:
@@ -74,15 +97,8 @@ A few notes:
 
 3. The sum function can return multiple arguments as a list.
 
-4. Emitting is synchronous by design and will likely never change.
+4. Emitting is synchronous by design.
 
-
-A shorthand exists to avoid switch statements, but multiple bindings is probably an antipattern:
-```javascript
-actions.on(actions.SUM, function(name, data) {
-  console.log(name, data);
-});
-```
 #### <a name="AsyncActions"></a>AsyncActions
 
 Some actions have handlers that are asynchronous.  It is often necessary to take some further action after all the dispatchers have completed.  Asynchronous actions solve this problem.
@@ -105,7 +121,7 @@ actions.async_sum(1, 2, function(sum) {
 ```
 ***NOTE:*** Async actions are prefixed with *async*.  
 
-The callback to *actions.async_sum* will not be called until both listeners have fired their callback.  
+The callback to *actions.async_sum* will not be called until both listeners have fired their callback.
 
 #### <a name="Models"></a>Models (Stores)
 
