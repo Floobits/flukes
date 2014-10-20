@@ -1,5 +1,4 @@
 #flux
-====
 
 [![Build Status](https://travis-ci.org/Floobits/flukes.svg)](https://travis-ci.org/Floobits/flukes)
 
@@ -8,11 +7,15 @@
 Floobit's Flux is an implementation of Facebook's [Flux](http://facebook.github.io/react/docs/flux-overview.html) architecture for React.  Flux attemps to remove all boilerplate from React while providing light wieght models and event emitters. If React is the V in MVC, Flux is the M.
 
 ##Design Goals
-Flux is minimal, modern, and designed for reactive programing.  Whenever a choice exists between ease of use and compatability, Flux choices the former.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
+Flux is minimal, modern, and designed for reactive programing.  It choices ease of use and development over suport for dated browsers.  Because of the liberal use of  [getters and setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters), it is not supported by ie9 or earlier.
 
-##Components
+##Components:
+[Actions](#Actions)
+[AsyncActions](#AsyncActions)
+[Models](#Models)
+[AutoBinder](#AutoBinder - Binding to React Components))
 
-###Actions
+#### <a name="Actions"></a>Actions
 A Flux Action is a public, static event emitter with a well defined interface.  
 
 Evented code typically relies on event emitters with callbacks.  In practice, raw emitters are error prone because objects come and go (including the emitter itself)-  binding and unbinding callbacks, and emitting events often results in intractable spaghetti code.
@@ -61,8 +64,7 @@ actions.on(actions.SUM, function(name, data) {
   console.log(name, data);
 });
 ```
-
-#### AsyncActions
+#### <a name="AsyncActions"></a>AsyncActions
 
 Some actions have handlers that are asynchronous.  It is often necessary to take some further action after all the dispatchers have completed.  Asynchronous actions solve this problem.
 
@@ -86,7 +88,8 @@ actions.async_sum(1, 2, function(sum) {
 
 The callback to *actions.async_sum* will not be called until both listeners have fired their callback.  
 
-###Models (Stores)
+#### <a name="Models"></a>Models (Stores)
+
 Flux Models are the canonical source of truth for data and provide a well defined interface for mutating state.  
 
 React Components may contain state (and update themselves on state changes), but in practice most React components are stateless apart from their props.  Outside of props as state, only the component (a View) can access or mutate the state.
@@ -103,5 +106,5 @@ A collection is an ordered set of DataModels. Collections are homogenous.  When 
 ####List
 A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.
 
-###AutoBinder
+#### <a name="AutoBinder"></a>AutoBinder (Binding to React Components)
 Binds Models state to React Components.  When Model's state changes, it calls forceupdate.
