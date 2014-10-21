@@ -128,7 +128,7 @@ The callback to *actions.async_sum* will not be called until both listeners have
 Flux Models are the canonical source of truth within an application and provide a well defined interface for mutating state.
 
 ####Motivation
-Props and State in React Components are nearly always insufficient for reactive rendering on their own. In practice, state is populated from a database or perhaps localstorage. It travels through some intermediate representation before Components exist meaning State is __not__ the canonical source of truth for the rest of the application.  Components only react to state changes, so props can not be used without boilerplate.  State is likely a subset of the data so it must be serialized and __merged__ before permanent storage. Finally, user interactions which mutate the same state can span __multiple__ Components.
+Props and State in React Components are insufficient for reactive rendering on their own. In practice, state is populated from a database or perhaps localstorage. It travels through some intermediate representation before Components exist meaning State is __not__ the canonical source of truth for the rest of the application.  Components only react to state changes, so props can not be used without boilerplate.  State is likely a subset of the data so it must be serialized and __merged__ before permanent storage. Finally, user interactions which mutate state span __multiple__ Components.
 
 React components can bind to models via the [AutoBinder Mixin](#AutoBinder); the component will be rerendered automagically when the model changes.  Models may contain references to other models.  In this case, change events proprogate up the chain. Typically, you should only bind the root level model.  
 
@@ -139,6 +139,43 @@ Models come in three flavors:
 
 ####<a name="DataModel"></a>DataModel
 DataModels are the workhorse of Flux.  They are modeled after React Components and may contain references to other Models, Lists, or Collections.
+
+```javascript
+var flux = require("flux"),
+  fieldTypes = flux.FieldTypes,
+  Model, model;
+  
+Model = flux.createModel({
+  modelName: "ModelModelModel",
+  fieldTypes: {
+    someField: fieldTypes.string,
+  }
+});
+
+model = new Model({someField: "asdf"});
+```
+The attribute modelName is used for logging and is not required. FieldTypes are Flux's analog to propTypes and are required.  The fields are reactive; when a value changes, the model emits an update event.  Models must have an __id__ field; if it is not supplied, a number field will be added automatically to the model;id fields may be any (hashable) type.
+
+Models have other special fields:
+
+```javascript
+Model = flux.createModel({
+  init: function (defaults, args) {
+    // called exactly once after default arguments have been handled
+    console.log(defaults, args);
+  },
+  didUpdate: function (field) {
+    if (field === "someField") {
+      // suppresses emitting events
+      return false;
+    }
+  },
+  fieldTypes: {
+    someField: fieldTypes.string,
+  }
+});
+```
+
 
 ####<a name="Collection"></a>Collection
 
