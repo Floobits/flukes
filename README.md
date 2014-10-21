@@ -154,12 +154,14 @@ Model = flux.createModel({
 
 model = new Model({someField: "asdf"});
 ```
-The attribute modelName is used for logging and is not required. FieldTypes are Flux's analog to propTypes and are required.  The fields are reactive; when a value changes, the model emits an update event.  Models must have an __id__ field; if it is not supplied, a number field will be added automatically to the model;id fields may be any (hashable) type.
+The attribute modelName is used for logging and is not required. FieldTypes are Flux's analog to propTypes and are required.  The fields are reactive; when a value changes, the model emits an update event.  Models must have an __id__ field. If it is not supplied, a number field will be added automatically to the model- id fields may be any (hashable) type.
 
 Models have other special fields:
 
 ```javascript
 Model = flux.createModel({
+  // will save an instance to local storage on model.save()
+  backend: flux.backends.local,
   init: function (defaults, args) {
     // called exactly once after default arguments have been handled
     console.log(defaults, args);
