@@ -16,7 +16,7 @@ Flux choices ease of use and development over legacy suport.  Because of the lib
 - [AutoBinder](#AutoBinder) - Binding to React Components
 - [BestPractices](#BestPractices)
 
-#### <a name="Events"></a>Events
+### <a name="Events"></a>Events
 Event binding breaks from the NodeJS convention by returning a unique ID (number).  
 
 
@@ -34,7 +34,7 @@ events.off('SomeEvent');
 events.off();
 ```
 
-#### <a name="Actions"></a>Actions
+### <a name="Actions"></a>Actions
 A Flux Action is a public, (typically) static event emitter with a well defined interface.  
 
 Evented code often relies on event emitters with callbacks.  In practice, raw emitters are error prone.  Binding to the incorrect event (mispelling the name) results in code that is never called, not an exception.  Objects tend to come and go including both the emitter and handler.  Finally, optionally binding events is often necessary and results in intractable spaghetti code.
@@ -123,7 +123,7 @@ actions.async_sum(1, 2, function(sum) {
 
 The callback to *actions.async_sum* will not be called until both listeners have fired their callback.
 
-####<a name="Models"></a>Models (Stores)
+###<a name="Models"></a>Models (Stores)
 
 Flux Models are the canonical source of truth within an application and provide a well defined interface for mutating state.
 
