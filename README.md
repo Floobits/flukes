@@ -181,7 +181,39 @@ Model = flux.createModel({
 
 ####<a name="Collection"></a>Collection
 
-A collection is an ordered set of DataModels. Collections are homogenous.  When a model changes, the Collection emits a change event.
+A collection is an ordered set of DataModels. Collections are homogenous.  When a model is added or when it changes, the Collection emits a change event.
+
+```javascript
+Models = flux.createCollection({
+  model: Model,
+  modelName: "Models",
+});
+```
+
+Collection instances have the following methods:
+- ***add(model)*** - adds the model to the collection
+- ***remove(id)*** - removes the model matching the id
+- ***insert(model, index)*** - inserts the model at postion __index__
+- ***byIndex(i)*** finds model at index i
+- ***get(id)*** returns model with id, __id__
+- ***valueOf()*** serialized the entire collection to JSON recursively - ephemeral fields are omitted
+- ***sort()*** - sorts the models via the time at which they were added or by the user defined sort function
+- ***set([models])*** - adds or overwrites existing models that match the ids of the models
+- ***reset()*** empties the collection
+- ***map(f, opt_thisArg)*** maps over the collection using the order
+- ***forEach(f, opt_thisArg)*** loops over the collection using the order
+- ***reduce(f, accumulator, opt_thisArg)*** reduces the collection returning the result
+- ***find(f, opt_thisArg)*** returns the model the first time __fmodel, index)__ returns true
+- ***save(namespace, id)*** serializes this model using valueOf and saves under namespace __namespace__ and id __id__
+- ***load(namespace, opt_cb)*** calls backend.load and set() with the data. throws if no backend is specified.  
+
+Properties:
+-***length*** returns the size of the collection
+-***model*** the model
+
+Static Methods:
+-***load(namespace, id, opt_cb)*** will load and return a new collection with key __key__ and id __id__
+
 
 ####<a name="List"></a>List
 A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists only update when members are added or removed.
