@@ -208,11 +208,11 @@ Collection instances have the following methods:
 - ***load(namespace, opt_cb)*** calls backend.load and set() with the data. throws if no backend is specified.  
 
 Properties:
--***length*** returns the size of the collection
--***model*** the model
+- ***length*** returns the size of the collection
+- ***model*** the model
 
 Static Methods:
--***load(namespace, id, opt_cb)*** will load and return a new collection with key __key__ and id __id__
+- ***load(namespace, id, opt_cb)*** will load and return a new collection with key __key__ and id __id__
 
 
 ####<a name="List"></a>List
