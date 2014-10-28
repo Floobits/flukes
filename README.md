@@ -178,6 +178,11 @@ Model = flux.createModel({
 });
 ```
 
+Model instances have the following methods:
+- ***set({}, options)*** - sets the values for fields and calls update afterwards- if {silent: true} is given as an option, the instance will not emit
+- ***valueOf()*** - recursively JSON serialization discarding ephemeral fields
+- ***save(opt_key, opt_cb)*** - saves the instance if a backend is specified
+
 
 ####<a name="Collection"></a>Collection
 
@@ -189,10 +194,6 @@ Models = flux.createCollection({
   modelName: "Models",
 });
 ```
-Model instances have the following methods:
-- ***set({}, options)*** - sets the values for fields and calls update afterwards- if {silent: true} is given as an option, the instance will not emit
-- ***valueOf()*** - recursively JSON serialization discarding ephemeral fields
-- ***save(opt_key, opt_cb)*** - saves the instance if a backend is specified
 
 Collection instances have the following methods:
 - ***add(model)*** - adds the model to the collection
