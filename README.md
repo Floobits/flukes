@@ -189,6 +189,10 @@ Models = flux.createCollection({
   modelName: "Models",
 });
 ```
+Model instances have the following methods:
+- ***set({}, options)*** - sets the values for fields and calls update afterwards- if {silent: true} is given as an option, the instance will not emit
+- ***valueOf()*** - recursively JSON serialization discarding ephemeral fields
+- ***save(opt_key, opt_cb)*** - saves the instance if a backend is specified
 
 Collection instances have the following methods:
 - ***add(model)*** - adds the model to the collection
@@ -216,7 +220,8 @@ Static Methods:
 
 
 ####<a name="List"></a>List
-A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists only update when members are added or removed.
+A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists have all methods of Arrays.  Lists only update when members are added or removed.
+
 
 #### <a name="AutoBinder"></a>AutoBinder Mixin (Binding to React Components)
 The AutoBinder Mixin is glue for binding Models to  Components.  When the Model's state changes, the mixin calls forceupdate on the Component ensuring it is rerendered.  Consider the following model and component:
