@@ -91,6 +91,10 @@ The values returned by actions are __applied__ to the bound handlers.  If you wa
 var actions, Actions = flux.createActions({
   f: function (x) {
     return [1, 2, 3];
+  },
+  g: function () {
+    // returns an array
+    return [[1, 2, 3]];
   }
 });
 
@@ -100,9 +104,11 @@ actions.onF(function (a, b, c) {
 });
 actions.f();
 // 1 2 3
+actions.g();
+// [1, 2, 3] undefined undefined
 ```
 
-Return an Error object from an aciton to cancel the dispatch.  The error will be returned from the action call.
+Actions may ***return*** an Error object to cancel the dispatch.  The error will be returned from the action call.
 ```javascript
 var actions, Actions = flux.createActions({
   f: function () {
@@ -117,7 +123,7 @@ var err = actions.f();
 
 A final note, emitting is synchronous by design.
 
-#### <a name="AsyncActions"></a>AsyncActions
+#### <a name="AsyncActions"></a>AsyncActions (Experimental)
 
 Some actions have handlers that are asynchronous.  It is often necessary to take some further action after all the dispatchers have completed.  Asynchronous actions solve this problem.
 
