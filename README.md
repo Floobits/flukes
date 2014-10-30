@@ -27,7 +27,7 @@ var id = events.on(function () {});
 // binds to SomeEvent
 var onSomeEventId = events.on('SomeEvent', function () {});
 // unbind onSomeEventId handler
-events.off(id);
+events.off(onSomeEventId);
 // unbind all 'SomeEvent' handlers
 events.off('SomeEvent');
 // unbind all handlers
@@ -35,9 +35,8 @@ events.off();
 ```
 
 ### <a name="Actions"></a>Actions
-A Flux Action is a public, (typically singleton) event emitter with a well defined interface.  Actions are responsible for data flow.
+A Flux Action is a public, (typically singleton) event emitter with a well defined interface.
 
-####*(Synchronous)* Actions
 ```javascript
 var actions, Actions = flux.createActions({
   sum: function(a, b) {
