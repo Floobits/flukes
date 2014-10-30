@@ -214,12 +214,15 @@ Model instances have the following methods:
 
 ####<a name="Collection"></a>Collection
 
-A collection is an ordered set of DataModels. Collections are homogenous.  When a model is added or when it changes, the Collection emits a change event.
+A collection is a homogenous, ordered set of DataModels. Collections are ordered by the order in which models are added unless a sort function is supplied to createCollection.  When a model is added or when it changes, the Collection emits a change event.
 
 ```javascript
 Models = flux.createCollection({
   model: Model,
   modelName: "Models",
+  sort: function (a, b) {
+    return a > b;
+  }
 });
 ```
 
@@ -233,7 +236,7 @@ Collection instances have the following methods:
 - ***sort()*** - sorts the models via the time at which they were added or by the user defined sort function
 - ***set([models])*** - adds or overwrites existing models that match the ids of the models
 - ***reset()*** empties the collection
-- ***map(f, opt_thisArg)*** maps over the collection using the order
+- ***map(f, opt_thisArg)*** maps over the collection using the order calling f.call(opt_thisArg, model, id, index)
 - ***forEach(f, opt_thisArg)*** loops over the collection using the order
 - ***reduce(f, accumulator, opt_thisArg)*** reduces the collection returning the result
 - ***find(f, opt_thisArg)*** returns the model the first time __fmodel, index)__ returns true
