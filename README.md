@@ -70,20 +70,20 @@ console.log(actions.sum(1, 2));
 actions.on(actions.SUM, function (data) {});
 ```
 
-Actions also support the special property, ***init***, which is called after instantiation.
-
+Actions also support the special property, ***init***, which is called after instantiation.  Fields that aren't functions are set on Action's prototype.
 ```javascript
 var actions, Actions = flux.createActions({
   sum: function(b) {
-    return this.a + b;
+    return this.a + this.someVariable + b;
   },
   init: function (a) {
     this.a = a;
-  }
+  },
+  someVariable: 2,
 });
 
 actions = new Actions(1);
-actions.sum(2);
+actions.sum(3);
 ```
 
 The values returned by actions are __applied__ to the bound handlers.  If you want to return an array, it must be wrapped in another array:
