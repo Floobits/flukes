@@ -35,9 +35,7 @@ events.off();
 ```
 
 ### <a name="Actions"></a>Actions
-A Flux Action is a public, (typically) static event emitter with a well defined interface.  
-
-Evented code often relies on event emitters with callbacks.  In practice, raw emitters are error prone.  Binding to the incorrect event (mispelling the name) results in code that is never called, not an exception.  Objects tend to come and go including both the emitter and handler.  Finally, optionally binding events is often necessary and results in intractable spaghetti code.
+A Flux Action is a public, (typically singleton) event emitter with a well defined interface.  Actions are responsible for data flow.
 
 ####*(Synchronous)* Actions
 ```javascript
@@ -125,20 +123,17 @@ The callback to *actions.async_sum* will not be called until both listeners have
 
 ###<a name="Models"></a>Models (Stores)
 
-Flux Models are the canonical source of truth within an application and provide a well defined interface for mutating state.
+Flux Models are the canonical source of truth within an application and provide a well defined (reactive) interface for mutating state.
 
-####Motivation
-Props and State in React Components are insufficient for reactive rendering on their own. In practice, state is populated from a database or perhaps localstorage. It travels through some intermediate representation before Components exist meaning State is __not__ the canonical source of truth for the rest of the application.  Components only react to state changes, so props can not be used without boilerplate.  State is likely a subset of the data so it must be serialized and __merged__ before permanent storage. Finally, user interactions which mutate state span __multiple__ Components.
-
-React components can bind to models via the [AutoBinder Mixin](#AutoBinder); the component will be rerendered automagically when the model changes.  Models may contain references to other models.  In this case, change events proprogate up the chain. Typically, you should only bind the root level model.  
+React elements can bind to models via the [AutoBinder Mixin](#AutoBinder); the element will be rerendered automagically when the model changes.  Models may contain references to other models.  In this case, change events proprogate up the chain. You should only bind the root level model to an Element.  
 
 Models come in three flavors:
 - [DataModel](#DataModel) - a heterogenous container (sometimes called a Model)
-- [Collection](#Collection) - a homogenous ordered set of a Model
-- [List](#List) - a heterogenous list (children are not bound)
+- [Collection](#Collection) - a homogenous, ordered set of a DataModel
+- [List](#List) - a heterogenous list whose children are not bound
 
 ####<a name="DataModel"></a>DataModel
-DataModels are the workhorse of Flux.  They are modeled after React Components and may contain references to other Models, Lists, or Collections.
+DataModels are the workhorse of Flux.  They are loosely modeled after React Elements and may contain references to other Models, Lists, or Collections.
 
 ```javascript
 var flux = require("flux"),
@@ -156,16 +151,23 @@ model = new Model({someField: "asdf"});
 ```
 The attribute modelName is used for logging and is not required. FieldTypes are Flux's analog to propTypes and are required.  The fields are reactive; when a value changes, the model emits an update event.  Models must have an __id__ field. If it is not supplied, a number field will be added automatically to the model- id fields may be any (hashable) type.
 
+__createModel__ creates setters for each field in __fieldTypes__.  When the value for a field changes, the model will emit:
+```javascript
+// emits
+model.someField = "asdf";
+```
+
 Models have other special fields:
 
 ```javascript
 Model = flux.createModel({
   // will save an instance to local storage on model.save()
   backend: flux.backends.local,
-  init: function (defaults, args) {
-    // called exactly once after default arguments have been handled
-    console.log(defaults, args);
+  // applied with arguments to new Model(...) after fields have been set
+  init: function (a, b, c) {
+    console.log(a, b, c);
   },
+  // called before model emits
   didUpdate: function (field) {
     if (field === "someField") {
       // suppresses emitting events
@@ -221,7 +223,7 @@ Static Methods:
 
 
 ####<a name="List"></a>List
-A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists have all methods of Arrays.  Lists only update when members are added or removed.
+A thin wrapper around arrays because general getters (Harmony) haven't landed in JS land yet.  Lists have all methods of Arrays.  Lists only emit when members are added or removed.
 
 
 #### <a name="AutoBinder"></a>AutoBinder Mixin (Binding to React Components)
