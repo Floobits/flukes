@@ -87,15 +87,36 @@ actions = new Actions(1);
 actions.sum(2);
 ```
 
-A few notes:
+The values returned by actions are __applied__ to the bound handlers.  If you want to return an array, it must be wrapped in another array:
+```javascript
+var actions, Actions = flux.createActions({
+  f: function (x) {
+    return [1, 2, 3];
+  }
+});
 
-1. Actions return values (which are emitted).
+actions = new Actions();
+actions.onF(function (a, b, c) {
+  console.log(a, b, c);
+});
+actions.f();
+// 1 2 3
+```
 
-2. The sum function can return an Error object which will cancel the dispatch.
+Return an Error object from an aciton to cancel the dispatch.  The error will be returned from the action call.
+```javascript
+var actions, Actions = flux.createActions({
+  f: function () {
+    return new Error("oh shit");
+  }
+});
+actions = new Actions();
+// never called
+actions.onF(console.log);
+var err = actions.f();
+```
 
-3. The sum function can return multiple arguments as a list.
-
-4. Emitting is synchronous by design.
+A final note, emitting is synchronous by design.
 
 #### <a name="AsyncActions"></a>AsyncActions
 
