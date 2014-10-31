@@ -46,7 +46,8 @@ module.exports = {
   subFields: function(test) {
     var model, Model, SubModel = flux.createModel({
       fieldTypes: {
-        subField: FieldTypes.string
+        subField: FieldTypes.string,
+        subField2: FieldTypes.string
       }
     });
     Model = flux.createModel({
@@ -56,10 +57,15 @@ module.exports = {
     });
     model = new Model({field: new SubModel()});
     model.on(function(field) {
-      test.equals(field, "field.subField");
-      test.done();
+      test.equals(field, "field");
     });
     model.field.subField = "asdf";
+    model.off();
+    model.field.on(function(fields) {
+      test.deepEqual(fields, ["subField", "subField2"]);
+    });
+    model.field.set({subField: "a", subField2: "b"});
+    test.done();
   },
   creation: function (test) {
     var model, Model, SubModel, SubModels,
