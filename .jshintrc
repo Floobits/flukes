@@ -5,6 +5,7 @@
   "strict": false,
   "node": true,
   "esnext": true,
+  "newcap": false,
   "nomen": false,
   "undef": true,
   "indent": 2,
