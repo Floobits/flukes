@@ -30,7 +30,7 @@
   "devDependencies": {
     "jshint": "2.4.x",
     "nodeunit": "0.9.x",
-    "webpack": "1.5.x"
+    "webpack": "1.4.x"
   },
   "licenses": [
     {
@@ -38,6 +38,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   ],
+  "main": "lib/flux.js",
   "directories": {
     "lib": "./lib"
   },
