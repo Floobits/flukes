@@ -9,8 +9,11 @@
   "nomen": false,
   "undef": true,
   "indent": 2,
+  "validthis": true,
   "globals": {
     "define": false,
-    "module": false
+    "module": false,
+    "self": false,
+    "$": false
   }
 }
