@@ -1,6 +1,6 @@
 {
   "name": "flukes",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An implementation of React's Flux architecture.",
   "maintainers": [
     {
@@ -30,7 +30,7 @@
   "devDependencies": {
     "jshint": "2.4.x",
     "nodeunit": "0.9.x",
-    "webpack": "1.4.x"
+    "webpack": "1.5.x"
   },
   "licenses": [
     {
