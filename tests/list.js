@@ -47,6 +47,16 @@ module.exports = {
     test.expect(2);
     test.done();
   },
+  toggleAddsEvent: function (test) {
+    var model, testField = [1, 2, 3], resultField = [1, 2, 3, 4];
+    model = setupModel(testField);
+    model.on(function () {
+      test.deepEqual(model.list.valueOf(), resultField, "Should have added 4.");
+      test.done();
+    });
+    test.expect(1);
+    model.list.toggle(4);
+  },
   toggleRemoves: function (test) {
     var model, testField = [1, 2, 3, 4, 4], resultField = [1, 2, 3];
     model = setupModel(testField);
